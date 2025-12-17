@@ -64,6 +64,7 @@ type AppConfig struct {
 	} `yaml:"upload"`
 	Setting struct {
 		SiteTitle     string `yaml:"sitetitle"`     // 网站标题
+		ServerLogo    string `yaml:"serverlogo"`    // 服务器Logo
 		Servername    string `yaml:"servername"`    // 服务器名称
 		Serverurl     string `yaml:"serverurl"`     // 服务器 URL
 		AllowRegister bool   `yaml:"allowregister"` // 是否允许注册
@@ -165,7 +166,9 @@ func GenSecretKey() {
 			Type:  "RSA PRIVATE KEY",
 			Bytes: privBytes,
 		})
-		os.WriteFile(keyDir+"/"+privateKey, privPem, 0o600)
+		if err := os.WriteFile(keyDir+"/"+privateKey, privPem, 0o600); err != nil {
+			log.Fatalf("Failed to write private key: %v", err)
+		}
 
 		// 保存公钥到文件
 		pub := &priv.PublicKey
@@ -177,7 +180,9 @@ func GenSecretKey() {
 			Type:  "PUBLIC KEY",
 			Bytes: pubBytes,
 		})
-		os.WriteFile(keyDir+"/"+publicKey, pubPem, 0o644)
+		if err := os.WriteFile(keyDir+"/"+publicKey, pubPem, 0o644); err != nil {
+			log.Fatalf("Failed to write public key: %v", err)
+		}
 
 		log.Println("Generated RSA key pair and saved to private.pem and public.pem")
 		RSA_PRIVATE_KEY = privPem

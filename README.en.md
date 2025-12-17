@@ -19,7 +19,7 @@
 <div align="center">
   <img alt="Ech0" src="./docs/imgs/logo.svg" width="150">
 
-  [Preview](https://memo.vaaat.com/) | [Official Site & Doc](https://echo.soopy.cn/) | [Ech0 Hub](https://echohub.soopy.cn/)
+  [Preview](https://memo.vaaat.com/) | [Official Site & Doc](https://www.ech0.app/) | [Ech0 Hub](https://hub.ech0.app/)
 
   # Ech0
 </div>

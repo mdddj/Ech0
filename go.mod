@@ -18,7 +18,6 @@ require (
 	github.com/cloudwego/eino-ext/components/model/openai v0.1.5
 	github.com/cloudwego/eino-ext/components/model/qwen v0.1.2
 	github.com/dgraph-io/ristretto/v2 v2.3.0
-	github.com/disintegration/imaging v1.6.2
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-co-op/gocron/v2 v2.17.0
 	github.com/golang-jwt/jwt/v5 v5.3.0
@@ -38,6 +37,7 @@ require (
 	github.com/swaggo/swag v1.16.6
 	go.uber.org/zap v1.27.0
 	golang.org/x/net v0.46.0
+	golang.org/x/sync v0.17.0
 	golang.org/x/text v0.30.0
 	google.golang.org/genai v1.36.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
@@ -184,9 +184,7 @@ require (
 	golang.org/x/arch v0.22.0 // indirect
 	golang.org/x/crypto v0.43.0 // indirect
 	golang.org/x/exp v0.0.0-20250819193227-8b4c13bb791b // indirect
-	golang.org/x/image v0.32.0 // indirect
 	golang.org/x/mod v0.29.0 // indirect
-	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect

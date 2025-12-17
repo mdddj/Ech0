@@ -6,6 +6,7 @@ import { Mode, ExtensionType, ImageSource, ImageLayout } from '@/enums/enums'
 import { useEchoStore } from '@/stores/echo'
 import { useTodoStore } from '@/stores/todo'
 import { localStg } from '@/utils/storage'
+import { getImageSize } from '@/utils/other'
 
 export const useEditorStore = defineStore('editorStore', () => {
   const echoStore = useEchoStore()
@@ -139,11 +140,20 @@ export const useEditorStore = defineStore('editorStore', () => {
   // 图片模式功能函数
   //===============================================================
   // 添加更多图片
-  const handleAddMoreImage = () => {
+  const handleAddMoreImage = async () => {
+    let width: number | undefined = imageToAdd.value.width
+    let height: number | undefined = imageToAdd.value.height
+    if (width === undefined || height === undefined) {
+      const size = await getImageSize(imageToAdd.value.image_url)
+      width = size.width
+      height = size.height
+    }
     imagesToAdd.value.push({
       image_url: imageToAdd.value.image_url,
       image_source: imageToAdd.value.image_source,
       object_key: imageToAdd.value.object_key ? imageToAdd.value.object_key : '',
+      width,
+      height,
     })
 
     imageToAdd.value = {
@@ -155,8 +165,8 @@ export const useEditorStore = defineStore('editorStore', () => {
     }
   }
 
-  const handleUppyUploaded = (files: App.Api.Ech0.ImageToAdd[]) => {
-    files.forEach((file) => {
+  const handleUppyUploaded = async (files: App.Api.Ech0.ImageToAdd[]) => {
+    for (const file of files) {
       imageToAdd.value = {
         image_url: file.image_url,
         image_source: file.image_source,
@@ -164,11 +174,11 @@ export const useEditorStore = defineStore('editorStore', () => {
         width: file.width,
         height: file.height,
       }
-      handleAddMoreImage()
-    })
+      await handleAddMoreImage()
+    }
 
     if (isUpdateMode.value && echoStore.echoToUpdate) {
-      handleAddOrUpdateEcho(true) // 仅同步图片
+      await handleAddOrUpdateEcho(true) // 仅同步图片
     }
   }
 

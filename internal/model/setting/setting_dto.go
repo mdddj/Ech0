@@ -3,6 +3,7 @@ package model
 // SystemSettingDto 定义系统设置数据传输对象
 type SystemSettingDto struct {
 	SiteTitle     string `json:"site_title"`     // 站点标题
+	ServerLogo    string `json:"server_logo"`    // 服务器Logo
 	ServerName    string `json:"server_name"`    // 服务器名称
 	ServerURL     string `json:"server_url"`     // 服务器地址
 	AllowRegister bool   `json:"allow_register"` // 是否允许注册

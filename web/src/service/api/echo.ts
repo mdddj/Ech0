@@ -9,17 +9,6 @@ export function fetchGetEchosByPage(searchParams: App.Api.Ech0.ParamsByPaginatio
   })
 }
 
-// 上传图片
-export function fetchUploadImage(file: File) {
-  const formData = new FormData()
-  formData.append('file', file)
-  return request<string>({
-    url: `/images/upload`,
-    method: 'POST',
-    data: formData,
-  })
-}
-
 // 添加Echo
 export function fetchAddEcho(echoToAdd: App.Api.Ech0.EchoToAdd) {
   return request({
@@ -75,15 +64,6 @@ export function fetchGetHeatMap() {
   return request<App.Api.Ech0.HeatMap>({
     url: `/heatmap`,
     method: 'GET',
-  })
-}
-
-// 删除Image
-export function fetchDeleteImage(image: App.Api.Ech0.ImageToDelete) {
-  return request({
-    url: `/images/delete`,
-    method: 'DELETE',
-    data: image,
   })
 }
 

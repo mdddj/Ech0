@@ -18,7 +18,7 @@
 <div align="center">
   <img alt="Ech0" src="./docs/imgs/logo.svg" width="150">
 
-  [预览地址](https://memo.vaaat.com/) | [官网与文档](https://echo.soopy.cn/) | [Ech0 Hub](https://echohub.soopy.cn/)
+  [预览地址](https://memo.vaaat.com/) | [官网与文档](https://www.ech0.app/) | [Ech0 Hub](https://hub.ech0.app/)
 
   # Ech0
 </div>

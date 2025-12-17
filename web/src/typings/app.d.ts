@@ -48,6 +48,16 @@ declare namespace App {
       }
     }
 
+    namespace File {
+      type ImageDto = {
+        url: string
+        source: string
+        object_key?: string
+        width?: number
+        height?: number
+      }
+    }
+
     namespace Ech0 {
       type ParamsByPagination = {
         page: number
@@ -180,6 +190,7 @@ declare namespace App {
     namespace Setting {
       type SystemSetting = {
         site_title: string
+        server_logo: string
         server_name: string
         server_url: string
         allow_register: boolean
@@ -468,6 +479,29 @@ declare namespace App {
         server_name: string
         server_url: string
         logo: string
+      }
+    }
+
+    namespace Inbox {
+      type Inbox = {
+        id: number
+        source: string
+        content: string
+        type: string
+        read: boolean
+        meta?: string
+        created_at: string
+      }
+
+      type InboxListResult = {
+        items: Inbox[]
+        total: number
+      }
+
+      type InboxListParams = {
+        page: number
+        pageSize: number
+        search?: string
       }
     }
   }

@@ -199,23 +199,27 @@ const initUppy = () => {
 
     // 分两种情况: Local 或者 S3
     if (memorySource.value === ImageSource.LOCAL) {
-      const fileUrl = String(response.body?.data)
+      const res = response.body as unknown as App.Api.Response<App.Api.File.ImageDto>
+      const fileUrl = String(res.data.url)
+      const { width, height } = res.data
       const item: App.Api.Ech0.ImageToAdd = {
         image_url: fileUrl,
         image_source: ImageSource.LOCAL,
         object_key: '',
+        width: width,
+        height: height,
       }
       files.value.push(item)
     } else if (memorySource.value === ImageSource.S3) {
       const uploadedFile = tempFiles.value.get(file?.name || '') || ''
-      if (uploadedFile) {
-        const item: App.Api.Ech0.ImageToAdd = {
-          image_url: uploadedFile.url,
-          image_source: ImageSource.S3,
-          object_key: uploadedFile.objectKey,
-        }
-        files.value.push(item)
+      if (!uploadedFile) return
+
+      const item: App.Api.Ech0.ImageToAdd = {
+        image_url: uploadedFile.url,
+        image_source: ImageSource.S3,
+        object_key: uploadedFile.objectKey,
       }
+      files.value.push(item)
     }
   })
   // 全部文件上传完成后，发射事件到父组件

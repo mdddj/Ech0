@@ -174,12 +174,11 @@ import TheImageGallery from './TheImageGallery.vue'
 import TheModel3DCard from './TheModel3DCard.vue'
 import 'md-editor-v3/lib/preview.css'
 import { MdPreview } from 'md-editor-v3'
-import { onMounted, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { fetchLikeEcho } from '@/service/api'
 import { theToast } from '@/utils/toast'
 import { localStg } from '@/utils/storage'
 import { storeToRefs } from 'pinia'
-import { fetchGetStatus } from '@/service/api'
 import { useSettingStore } from '@/stores/setting'
 import { getApiUrl } from '@/service/request/shared'
 import { ExtensionType, ImageLayout } from '@/enums/enums'
@@ -255,18 +254,14 @@ const settingStore = useSettingStore()
 const { SystemSetting } = storeToRefs(settingStore)
 
 const apiUrl = getApiUrl()
-const logo = ref<string>('/favicon.svg')
-
-onMounted(() => {
-  fetchGetStatus().then((res) => {
-    if (res.code === 1) {
-      const theLogo = res.data.logo
-      if (theLogo && theLogo !== '') {
-        logo.value = `${apiUrl}${theLogo}`
-      }
-    }
-  })
-})
+const logo = ref<string>('/Ech0.svg')
+if (
+  SystemSetting.value.server_logo &&
+  SystemSetting.value.server_logo !== '' &&
+  SystemSetting.value.server_logo !== 'Ech0.svg'
+) {
+  logo.value = `${apiUrl}${SystemSetting.value.server_logo}`
+}
 </script>
 
 <style scoped lang="css">

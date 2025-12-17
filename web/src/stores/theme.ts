@@ -1,38 +1,65 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { localStg } from '@/utils/storage'
 
+export type ThemeMode = 'system' | 'light' | 'dark'
 type ThemeType = 'light' | 'dark'
 
 export const useThemeStore = defineStore('themeStore', () => {
+  const savedThemeMode = localStg.getItem('themeMode')
   const savedTheme = localStg.getItem('theme')
-  const systemPrefersDark =
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+
+  // 初始化 themeMode
+  const mode = ref<ThemeMode>(
+    savedThemeMode === 'system' || savedThemeMode === 'light' || savedThemeMode === 'dark'
+      ? savedThemeMode
+      : 'system',
+  )
   const theme = ref<ThemeType>(
-    savedTheme === 'light' || savedTheme === 'dark'
-      ? savedTheme
-      : systemPrefersDark
-        ? 'dark'
-        : 'light',
+    savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'light',
   )
 
   const toggleTheme = () => {
-    theme.value = theme.value === 'light' ? 'dark' : 'light'
-    applyTheme(theme.value)
+    if (mode.value === 'system') {
+      mode.value = 'light'
+    } else if (mode.value === 'light') {
+      mode.value = 'dark'
+    } else {
+      mode.value = 'system'
+    }
+
+    applyTheme()
+    localStg.setItem('themeMode', mode.value)
   }
 
-  const applyTheme = (t: ThemeType) => {
+  const applyTheme = () => {
+    switch (mode.value) {
+      case 'system':
+        theme.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        break
+      case 'light':
+        theme.value = 'light'
+        break
+      case 'dark':
+        theme.value = 'dark'
+        break
+    }
+
     document.documentElement.classList.remove('light', 'dark')
-    document.documentElement.classList.add(t)
-    localStg.setItem('theme', t)
+    document.documentElement.classList.add(theme.value)
+    localStg.setItem('theme', theme.value)
   }
 
   const init = () => {
-    applyTheme(theme.value)
+    applyTheme()
+    // 监听系统主题变化
+    watch(theme, applyTheme)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme)
   }
 
   return {
     theme,
+    mode,
     toggleTheme,
     applyTheme,
     init,

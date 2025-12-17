@@ -5,6 +5,7 @@ import { watch } from 'vue'
 import { useSettingStore } from '@/stores/setting'
 import { storeToRefs } from 'pinia'
 import { Toaster } from 'vue-sonner'
+import { getApiUrl } from './service/request/shared'
 import 'vue-sonner/style.css'
 import BaseDialog from './components/common/BaseDialog.vue'
 
@@ -16,10 +17,41 @@ const dialogRef = ref()
 const settingStore = useSettingStore()
 const { SystemSetting } = storeToRefs(settingStore)
 
+const DEFAULT_FAVICON = '/favicon.ico'
+const API_URL = getApiUrl()
+
+const updateFavicon = (logo?: string) => {
+  const head = document.head
+  if (!head) return
+
+  const href = logo?.trim() ? API_URL + logo : DEFAULT_FAVICON
+  const iconLinks = head.querySelectorAll<HTMLLinkElement>('link[rel*="icon"]')
+
+  if (iconLinks.length > 0) {
+    iconLinks.forEach((link) => {
+      link.href = href
+    })
+    return
+  }
+
+  const newFavicon = document.createElement('link')
+  newFavicon.rel = 'icon'
+  newFavicon.href = href
+  head.appendChild(newFavicon)
+}
+
 watch(
   () => SystemSetting.value.site_title,
   (title) => {
     if (title) document.title = title
+  },
+  { immediate: true },
+)
+
+watch(
+  () => SystemSetting.value.server_logo,
+  (logo) => {
+    updateFavicon(logo)
   },
   { immediate: true },
 )

@@ -36,8 +36,8 @@
 <script setup lang="ts">
 import Hello from '@/components/icons/hello.vue'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
-import { fetchGetStatus, fetchHelloEch0 } from '@/service/api'
+import { ref } from 'vue'
+import { fetchHelloEch0 } from '@/service/api'
 import { useSettingStore } from '@/stores/setting'
 import { useThemeStore } from '@/stores/theme'
 import { getApiUrl } from '@/service/request/shared'
@@ -49,10 +49,19 @@ const themeStore = useThemeStore()
 const { SystemSetting } = storeToRefs(settingStore)
 
 const apiUrl = getApiUrl()
-const logo = ref<string>('/favicon.svg')
+const logo = ref<string>('/Ech0.svg')
+if (
+  SystemSetting.value.server_logo &&
+  SystemSetting.value.server_logo !== '' &&
+  SystemSetting.value.server_logo !== '/Ech0.svg'
+) {
+  logo.value = `${apiUrl}${SystemSetting.value.server_logo}`
+}
 
 const handleHello = () => {
   themeStore.toggleTheme()
+  const modeText =
+    themeStore.mode === 'system' ? 'Auto' : themeStore.mode === 'light' ? 'Light' : 'Dark'
 
   const hello = ref<App.Api.Ech0.HelloEch0>()
 
@@ -60,7 +69,7 @@ const handleHello = () => {
     if (res.code === 1) {
       hello.value = res.data
       theToast.success('你好呀！ 👋', {
-        description: `当前版本：v${hello.value.version}`,
+        description: `当前版本：v${hello.value.version} | ${modeText}`,
         duration: 2000,
         action: {
           label: 'Github',
@@ -72,17 +81,6 @@ const handleHello = () => {
     }
   })
 }
-
-onMounted(() => {
-  fetchGetStatus().then((res) => {
-    if (res.code === 1) {
-      const theLogo = res.data.logo
-      if (theLogo && theLogo !== '') {
-        logo.value = `${apiUrl}${theLogo}`
-      }
-    }
-  })
-})
 </script>
 
 <style scoped></style>

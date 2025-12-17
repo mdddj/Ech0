@@ -91,3 +91,15 @@ export enum AgentProvider {
   OLLAMA = 'ollama',
   CUSTOM = 'custom',
 }
+
+// Inbox
+export enum InboxType {
+  Echo = 'echo',
+  Notification = 'notification',
+}
+
+export enum InboxSource {
+  System = 'system',
+  User = 'user',
+  Agent = 'agent',
+}
