@@ -3,7 +3,7 @@
     <div
       class="widget rounded-md shadow-sm hover:shadow-md ring-1 ring-[var(--ring-color)] ring-inset p-4"
     >
-      <h2 class="text-[var(--widget-title-color)] font-bold text-lg mb-2 flex items-center">
+      <h2 class="text-[var(--widget-title-color)] font-bold text-lg mb-3 flex items-center">
         <MonitorIcon class="mr-2 text-green-500" />
         <span>赛博监工</span>
         <span
@@ -14,22 +14,6 @@
         </span>
       </h2>
 
-      <!-- 统计概览 -->
-      <div v-if="stats" class="grid grid-cols-3 gap-2 mb-3 text-center">
-        <div class="bg-[var(--bg-color-next)] rounded p-2">
-          <div class="text-lg font-bold text-[var(--text-color)]">{{ stats.total_events }}</div>
-          <div class="text-xs text-[var(--text-color-next-500)]">事件</div>
-        </div>
-        <div class="bg-[var(--bg-color-next)] rounded p-2">
-          <div class="text-lg font-bold text-[var(--text-color)]">{{ stats.app_switch_count }}</div>
-          <div class="text-xs text-[var(--text-color-next-500)]">切换</div>
-        </div>
-        <div class="bg-[var(--bg-color-next)] rounded p-2">
-          <div class="text-lg font-bold text-[var(--text-color)]">{{ stats.notification_count }}</div>
-          <div class="text-xs text-[var(--text-color-next-500)]">通知</div>
-        </div>
-      </div>
-
       <!-- 事件列表 -->
       <div class="max-h-64 overflow-y-auto space-y-2 scrollbar-thin">
         <TransitionGroup name="event-list">
@@ -39,20 +23,21 @@
             class="event-item flex items-start gap-2 p-2 rounded bg-[var(--bg-color-next)] text-sm"
           >
             <!-- 事件图标 -->
-            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-              :class="getEventBgClass(event)">
+            <div class="flex-shrink-0 w-6 h-6 flex items-center justify-center">
               <img
                 v-if="getEventIcon(event)"
                 :src="getEventIcon(event)"
-                class="w-5 h-5 rounded"
+                class="w-6 h-6 rounded"
                 alt="app icon"
               />
               <span v-else class="text-base">{{ getEventEmoji(event) }}</span>
             </div>
             <!-- 事件内容 -->
             <div class="flex-1 min-w-0">
-              <div class="text-[var(--text-color)] truncate">{{ getEventTitle(event) }}</div>
-              <div class="text-xs text-[var(--text-color-next-500)] truncate">
+              <div class="text-[var(--text-color)] truncate max-w-[180px]" :title="getEventTitle(event)">
+                {{ getEventTitle(event) }}
+              </div>
+              <div class="text-xs text-[var(--text-color-next-500)] truncate max-w-[180px]">
                 {{ getEventDesc(event) }}
               </div>
             </div>
@@ -75,12 +60,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import MonitorIcon from '../icons/monitor.vue'
+import { useSettingStore } from '@/stores/setting'
+import { storeToRefs } from 'pinia'
 
-// 配置
-const API_BASE = 'http://202.140.142.250:9081'
-const WS_URL = 'ws://202.140.142.250:9081/ws'
+// 从系统设置获取配置
+const settingStore = useSettingStore()
+const { SystemSetting } = storeToRefs(settingStore)
+
+// 动态计算 API 地址，支持 HTTPS 自动适配
+const API_BASE = computed(() => {
+  const url = SystemSetting.value.cyber_monitor_url || ''
+  if (!url) return ''
+  // 如果用户没有指定协议，根据当前页面协议自动选择
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    const protocol = window.location.protocol === 'https:' ? 'https://' : 'http://'
+    return protocol + url
+  }
+  return url
+})
+
+const WS_URL = computed(() => {
+  const url = SystemSetting.value.cyber_monitor_url || ''
+  if (!url) return ''
+  // 移除 http(s):// 前缀，添加 ws(s)://
+  const cleanUrl = url.replace(/^https?:\/\//, '')
+  const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
+  return wsProtocol + cleanUrl + '/ws'
+})
 
 interface EventData {
   id?: number
@@ -98,15 +106,7 @@ interface EventData {
   }
 }
 
-interface Stats {
-  total_events: number
-  notification_count: number
-  app_switch_count: number
-  unique_apps: number
-}
-
 const events = ref<EventData[]>([])
-const stats = ref<Stats | null>(null)
 const connected = ref(false)
 const loading = ref(true)
 let ws: WebSocket | null = null
@@ -114,8 +114,9 @@ let reconnectTimer: ReturnType<typeof setTimeout> | null = null
 
 // 获取今日事件
 async function fetchTodayEvents() {
+  if (!API_BASE.value) return
   try {
-    const res = await fetch(`${API_BASE}/api/events`)
+    const res = await fetch(`${API_BASE.value}/api/events`)
     const result = await res.json()
     if (result.success && result.data) {
       // 按时间倒序，最新的在前面
@@ -128,101 +129,65 @@ async function fetchTodayEvents() {
   }
 }
 
-// 获取统计数据
-async function fetchStats() {
-  try {
-    const res = await fetch(`${API_BASE}/api/stats`)
-    const result = await res.json()
-    if (result.success && result.data) {
-      stats.value = result.data
-    }
-  } catch (e) {
-    console.error('获取统计失败:', e)
-  }
-}
-
 // WebSocket 连接
 function connectWS() {
+  if (!WS_URL.value) return
   if (ws) {
     ws.close()
   }
 
-  ws = new WebSocket(WS_URL)
+  try {
+    ws = new WebSocket(WS_URL.value)
 
-  ws.onopen = () => {
-    connected.value = true
-    console.log('赛博监工 WebSocket 已连接')
-  }
-
-  ws.onmessage = (e) => {
-    try {
-      const data = JSON.parse(e.data)
-      // 跳过欢迎消息
-      if (data.type === 'welcome') {
-        return
-      }
-      // 新事件入栈到顶部
-      const newEvent: EventData = {
-        event_id: data.eventId || `ws-${Date.now()}`,
-        event_type: data.eventType,
-        timestamp: data.timestamp,
-        timestamp_str: data.timestampStr,
-        device_id: data.deviceId,
-        data: data.data
-      }
-      events.value.unshift(newEvent)
-      // 保持列表不超过50条
-      if (events.value.length > 50) {
-        events.value.pop()
-      }
-      // 更新统计
-      if (stats.value) {
-        stats.value.total_events++
-        if (data.eventType === 'app_foreground_changed') {
-          stats.value.app_switch_count++
-        } else if (data.eventType === 'notification_received') {
-          stats.value.notification_count++
-        }
-      }
-    } catch (err) {
-      console.error('解析 WebSocket 消息失败:', err)
+    ws.onopen = () => {
+      connected.value = true
+      console.log('赛博监工 WebSocket 已连接')
     }
-  }
 
-  ws.onclose = () => {
+    ws.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data)
+        // 跳过欢迎消息
+        if (data.type === 'welcome') {
+          return
+        }
+        // 新事件入栈到顶部
+        const newEvent: EventData = {
+          event_id: data.eventId || `ws-${Date.now()}`,
+          event_type: data.eventType,
+          timestamp: data.timestamp,
+          timestamp_str: data.timestampStr,
+          device_id: data.deviceId,
+          data: data.data
+        }
+        events.value.unshift(newEvent)
+        // 保持列表不超过50条
+        if (events.value.length > 50) {
+          events.value.pop()
+        }
+      } catch (err) {
+        console.error('解析 WebSocket 消息失败:', err)
+      }
+    }
+
+    ws.onclose = () => {
+      connected.value = false
+      console.log('赛博监工 WebSocket 已断开，5秒后重连...')
+      reconnectTimer = setTimeout(connectWS, 5000)
+    }
+
+    ws.onerror = (err) => {
+      console.error('WebSocket 错误:', err)
+    }
+  } catch (err) {
+    console.error('WebSocket 连接失败:', err)
     connected.value = false
-    console.log('赛博监工 WebSocket 已断开，5秒后重连...')
-    reconnectTimer = setTimeout(connectWS, 5000)
-  }
-
-  ws.onerror = (err) => {
-    console.error('WebSocket 错误:', err)
   }
 }
 
 // 事件类型处理
 function getEventType(event: EventData): string {
   return event.event_type || event.eventType || event.data?.type || 'unknown'
-}
-
-function getEventBgClass(event: EventData): string {
-  const type = getEventType(event)
-  const typeMap: Record<string, string> = {
-    'app_foreground_changed': 'bg-blue-500/20',
-    'foregroundChange': 'bg-blue-500/20',
-    'notification_received': 'bg-yellow-500/20',
-    'notification': 'bg-yellow-500/20',
-    'app_launched': 'bg-green-500/20',
-    'app_terminated': 'bg-red-500/20',
-    'app': 'bg-purple-500/20',
-    'power_connected': 'bg-green-500/20',
-    'power_disconnected': 'bg-orange-500/20',
-    'battery_level_changed': 'bg-cyan-500/20',
-    'battery': 'bg-cyan-500/20',
-    'system_sleep': 'bg-gray-500/20',
-    'system_wake': 'bg-indigo-500/20',
-  }
-  return typeMap[type] || 'bg-gray-500/20'
 }
 
 function getEventEmoji(event: EventData): string {
@@ -330,7 +295,7 @@ function formatTime(ts: number | string | undefined): string {
 
 onMounted(async () => {
   loading.value = true
-  await Promise.all([fetchTodayEvents(), fetchStats()])
+  await fetchTodayEvents()
   loading.value = false
   connectWS()
 })

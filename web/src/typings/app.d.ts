@@ -198,6 +198,7 @@ declare namespace App {
         meting_api: string
         custom_css: string
         custom_js: string
+        cyber_monitor_url: string
       }
 
       type CommentSetting = {

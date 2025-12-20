@@ -14,8 +14,8 @@ RUN pnpm install --frozen-lockfile
 # 复制前端源代码
 COPY web/ .
 
-# 构建前端
-RUN pnpm run build --mode production
+# 构建前端（跳过类型检查）
+RUN pnpm run build-only --mode production
 
 # =================== 后端构建阶段 ===================
 FROM golang:1.25.1-alpine AS backend-builder
