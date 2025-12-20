@@ -54,7 +54,7 @@ import Delete from '../icons/delete.vue'
 import BaseButton from '../common/BaseButton.vue'
 import { fetchUpdateTodo, fetchDeleteTodo } from '@/service/api'
 import { theToast } from '@/utils/toast'
-import { useTodoStore } from '@/stores/todo'
+import { useTodoStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { useBaseDialog } from '@/composables/useBaseDialog'
 

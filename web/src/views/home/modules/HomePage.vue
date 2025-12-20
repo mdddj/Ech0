@@ -9,9 +9,10 @@
     </div>
     <div ref="mainColumn" class="sm:max-w-lg w-full sm:mt-1">
       <TheTop class="hidden sm:block sm:px-4" />
-      <TheEchos v-if="!todoMode && !isFilteringMode" />
-      <TheFilteredEchos v-else-if="!todoMode && isFilteringMode" />
-      <TheTodos v-else />
+      <TheEchos v-if="!todoMode && !isFilteringMode && !inboxMode" />
+      <TheFilteredEchos v-else-if="!todoMode && isFilteringMode && !inboxMode" />
+      <TheTodos v-else-if="todoMode && !inboxMode" />
+      <TheInbox v-else />
     </div>
     <div class="hidden xl:block sm:max-w-sm w-full px-6 h-screen">
       <TheHeatMap class="mb-2" />
@@ -35,16 +36,14 @@ import TheBoard from './TheBoard.vue'
 import TheEchos from './TheEchos.vue'
 import TheFilteredEchos from './TheFilteredEchos.vue'
 import TheTodos from './TheTodos.vue'
+import TheInbox from './TheInbox.vue'
 import TheConnects from '@/views/connect/modules/TheConnects.vue'
 import TheTodoCard from '@/components/advanced/TheTodoCard.vue'
 import TheRecentCard from '@/components/advanced/TheRecentCard.vue'
 import TheStatusCard from '@/components/advanced/TheStatusCard.vue'
 import TheHeatMap from '@/components/advanced/TheHeatMap.vue'
 import { onMounted, ref, onBeforeUnmount } from 'vue'
-import { useUserStore } from '@/stores/user'
-import { useTodoStore } from '@/stores/todo'
-import { useEchoStore } from '@/stores/echo'
-import { useSettingStore } from '@/stores/setting'
+import { useUserStore, useTodoStore, useEchoStore, useSettingStore, useInboxStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import TheAudioCard from '@/components/advanced/TheAudioCard.vue'
 
@@ -52,11 +51,13 @@ const todoStore = useTodoStore()
 const userStore = useUserStore()
 const echoStore = useEchoStore()
 const settingStore = useSettingStore()
+const inboxStore = useInboxStore()
 const { getTodos } = todoStore
 const { todoMode, todos } = storeToRefs(todoStore)
 const { isLogin } = storeToRefs(userStore)
 const { isFilteringMode } = storeToRefs(echoStore)
 const { AgentSetting } = storeToRefs(settingStore)
+const { inboxMode } = storeToRefs(inboxStore)
 
 const mainColumn = ref<HTMLElement | null>(null)
 const backTopStyle = ref({ right: '100px' }) // 默认 fallback

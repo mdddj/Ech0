@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import Connect from '@/components/icons/connect.vue'
-import { useConnectStore } from '@/stores/connect'
+import { useConnectStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 

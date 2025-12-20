@@ -93,7 +93,7 @@ import { ref, onMounted } from 'vue'
 import { fetchGetCurrentUser, fetchUpdateUser, fetchUploadImage } from '@/service/api'
 import { theToast } from '@/utils/toast'
 import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores'
 import { getApiUrl } from '@/service/request/shared'
 import { ImageSource } from '@/enums/enums'
 

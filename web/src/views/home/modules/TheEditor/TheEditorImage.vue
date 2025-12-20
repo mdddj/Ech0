@@ -56,12 +56,11 @@ import Close from '@/components/icons/close.vue'
 import { getImageToAddUrl } from '@/utils/other'
 import { fetchDeleteImage } from '@/service/api'
 import { theToast } from '@/utils/toast'
-import { useEchoStore } from '@/stores/echo'
+import { useEchoStore, useEditorStore } from '@/stores'
 import { Mode } from '@/enums/enums'
 import { Fancybox } from '@fancyapps/ui'
 import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import { ImageSource } from '@/enums/enums'
-import { useEditorStore } from '@/stores/editor'
 import { useBaseDialog } from '@/composables/useBaseDialog'
 
 const { openConfirm } = useBaseDialog()

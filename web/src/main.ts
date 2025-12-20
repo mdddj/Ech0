@@ -4,7 +4,7 @@ import '@/themes/index.scss'
 // Google Model Viewer for 3D models
 import '@google/model-viewer'
 
-import { initStores } from './stores/store-init'
+import { initStores } from './stores'
 
 // Md-Editor Start
 import { config } from 'md-editor-v3'
