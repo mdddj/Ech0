@@ -216,6 +216,20 @@ function getEventIcon(event: EventData): string | null {
   const innerData = event.data?.data as Record<string, unknown> | undefined
   if (!innerData) return null
   
+  // 优先使用新的 icon_url 字段
+  const iconUrl = innerData.icon_url as string | undefined
+  if (iconUrl) {
+    // 如果是相对路径，拼接 API 基础地址
+    return iconUrl.startsWith('http') ? iconUrl : `${API_BASE}${iconUrl}`
+  }
+  
+  // 通过 bundleId 获取图标
+  const bundleId = innerData.toBundleId || innerData.bundleId || innerData.sourceBundleId
+  if (bundleId && typeof bundleId === 'string') {
+    return `${API_BASE}/api/icons/${bundleId}`
+  }
+  
+  // 兼容旧的 base64 格式
   const icon = innerData.toAppIcon || innerData.appIcon || innerData.app_icon
   if (icon && typeof icon === 'string') {
     return `data:image/png;base64,${icon}`
