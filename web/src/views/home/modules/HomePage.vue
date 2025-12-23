@@ -25,7 +25,6 @@
       </div>
       <TheConnects class="mb-2" />
       <TheRecentCard v-if="AgentSetting.enable" />
-      <TheCyberMonitor class="mt-2" />
     </div>
   </div>
 </template>
@@ -47,7 +46,6 @@ import { onMounted, ref, onBeforeUnmount } from 'vue'
 import { useUserStore, useTodoStore, useEchoStore, useSettingStore, useInboxStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import TheAudioCard from '@/components/advanced/TheAudioCard.vue'
-import TheCyberMonitor from '@/components/advanced/TheCyberMonitor.vue'
 
 const todoStore = useTodoStore()
 const userStore = useUserStore()

@@ -123,7 +123,6 @@ func (settingService *SettingService) UpdateSetting(
 		setting.MetingAPI = httpUtil.TrimURL(newSetting.MetingAPI)
 		setting.CustomCSS = newSetting.CustomCSS
 		setting.CustomJS = newSetting.CustomJS
-		setting.CyberMonitorURL = httpUtil.TrimURL(newSetting.CyberMonitorURL)
 
 		// 序列化为 JSON
 		settingToJSON, err := jsonUtil.JSONMarshal(setting)

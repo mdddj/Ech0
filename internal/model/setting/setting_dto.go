@@ -12,7 +12,6 @@ type SystemSettingDto struct {
 	CommentAPI      string `json:"comment_api"`       // 评论 API 地址
 	CustomCSS       string `json:"custom_css"`        // 自定义 CSS
 	CustomJS        string `json:"custom_js"`         // 自定义 JS
-	CyberMonitorURL string `json:"cyber_monitor_url"` // 赛博监工服务地址
 }
 
 type CommentSettingDto struct {

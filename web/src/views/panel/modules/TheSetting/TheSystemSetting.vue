@@ -177,27 +177,6 @@
           class="w-full py-1!"
         />
       </div>
-      <!-- 赛博监工地址 -->
-      <div
-        class="flex flex-row items-center justify-start text-[var(--text-color-next-500)] gap-2 mb-1"
-      >
-        <h2 class="font-semibold w-26 shrink-0">赛博监工:</h2>
-        <span
-          v-if="!editMode"
-          class="truncate max-w-40 inline-block align-middle"
-          :title="SystemSetting.cyber_monitor_url"
-          style="vertical-align: middle"
-        >
-          {{ SystemSetting?.cyber_monitor_url?.length === 0 ? '暂无' : SystemSetting.cyber_monitor_url }}
-        </span>
-        <BaseInput
-          v-else
-          v-model="SystemSetting.cyber_monitor_url"
-          type="text"
-          placeholder="赛博监工服务地址,如: example.com:9081"
-          class="w-full py-1!"
-        />
-      </div>
       <!-- 允许注册 -->
       <div class="flex flex-row items-center justify-start text-[var(--text-color-next-500)]">
         <h2 class="font-semibold w-26 shrink-0">允许注册:</h2>

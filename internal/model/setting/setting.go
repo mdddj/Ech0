@@ -19,7 +19,6 @@ type SystemSetting struct {
 	MetingAPI       string `json:"meting_api"`        // Meting API 地址
 	CustomCSS       string `json:"custom_css"`        // 自定义 CSS
 	CustomJS        string `json:"custom_js"`         // 自定义 JS
-	CyberMonitorURL string `json:"cyber_monitor_url"` // 赛博监工服务地址
 }
 
 // CommentSetting 定义评论设置实体
