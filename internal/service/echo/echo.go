@@ -5,8 +5,6 @@ import (
 	"errors"
 	"strings"
 
-	"go.uber.org/zap"
-
 	"github.com/lin-snow/ech0/internal/event"
 	authModel "github.com/lin-snow/ech0/internal/model/auth"
 	commonModel "github.com/lin-snow/ech0/internal/model/common"
@@ -19,6 +17,7 @@ import (
 	"github.com/lin-snow/ech0/internal/transaction"
 	httpUtil "github.com/lin-snow/ech0/internal/util/http"
 	logUtil "github.com/lin-snow/ech0/internal/util/log"
+	"go.uber.org/zap"
 )
 
 type EchoService struct {
@@ -332,7 +331,8 @@ func (echoService *EchoService) UpdateEcho(userid uint, echo *model.Echo) error 
 	}
 
 	// 检查是否为空
-	if echo.Content == "" && len(echo.Images) == 0 && (echo.Extension == "" || echo.ExtensionType == "") {
+	if echo.Content == "" && len(echo.Images) == 0 &&
+		(echo.Extension == "" || echo.ExtensionType == "") {
 		return errors.New(commonModel.ECHO_CAN_NOT_BE_EMPTY)
 	}
 
