@@ -146,17 +146,17 @@ export const parseMusicURL = (url: string) => {
 export const extractAndCleanMusicURL = (input: string): string | null => {
   const text = input.trim()
 
-  // 1️⃣ 粗暴提取第一个 URL（足够鲁棒）
+  // 粗暴提取第一个 URL（足够鲁棒）
   const urlMatch = text.match(/https?:\/\/[^\s]+/i)
   if (!urlMatch) return null
 
   const rawUrl = urlMatch[0]
 
-  // 2️⃣ 复用统一解析函数
+  // 复用统一解析函数
   const parsed = parseMusicURL(rawUrl)
   if (!parsed) return null
 
-  // 3️⃣ 规范化重组
+  // 规范化重组
   switch (parsed.server) {
     case MusicProvider.NETEASE: {
       // 统一为 PC 可打开的最短链接
@@ -187,20 +187,6 @@ export const extractAndCleanMusicURL = (input: string): string | null => {
     default:
       return null
   }
-}
-
-// 获取图片尺寸
-export function getImageSize(imgUrl: string): Promise<{ width: number; height: number }> {
-  return new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => {
-      resolve({ width: img.width, height: img.height })
-    }
-    img.onerror = (err) => {
-      reject(err)
-    }
-    img.src = imgUrl
-  })
 }
 
 // 获取 HubEcho 的图片
@@ -241,4 +227,15 @@ export function uint8ArrayToBase64url(bytes: ArrayBuffer | Uint8Array): string {
   for (let i = 0; i < u8.length; i++) binary += String.fromCharCode(u8[i]!)
   const base64 = btoa(binary)
   return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
+}
+
+export function isSafari(): boolean {
+  const ua = navigator.userAgent
+  // Exclude Chrome, Chromium-based Edge, and iOS Chrome/Firefox
+  return (
+    ua.includes('Safari') &&
+    !ua.includes('Chrome') &&
+    !ua.includes('CriOS') &&
+    !ua.includes('FxiOS')
+  )
 }

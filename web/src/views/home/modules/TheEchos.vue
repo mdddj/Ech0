@@ -30,7 +30,7 @@
       v-if="!echoStore.hasMore && !echoStore.isLoading"
       class="mx-auto my-5 text-center font-serif"
     >
-      <span class="text-xl text-[var(--text-color-400)]">没有啦！🎉</span>
+      <span class="text-xl text-[var(--text-color-400)]">没有啦！🥲</span>
     </div>
     <!-- 加载中 -->
     <div v-if="echoStore.isLoading" class="mx-auto my-5 text-center font-serif">

@@ -5,7 +5,7 @@ import { fetchAddEcho, fetchUpdateEcho, fetchAddTodo, fetchGetMusic } from '@/se
 import { Mode, ExtensionType, ImageSource, ImageLayout } from '@/enums/enums'
 import { useEchoStore, useTodoStore, useInboxStore } from '@/stores'
 import { localStg } from '@/utils/storage'
-import { getImageSize } from '@/utils/other'
+import { getImageSize } from '@/utils/image'
 
 export const useEditorStore = defineStore('editorStore', () => {
   const echoStore = useEchoStore()

@@ -39,7 +39,7 @@
     </div>
 
     <!-- 布局方式选择 -->
-    <div class="mb-3 flex items-center gap-2">
+    <div class="mb-2 flex items-center gap-2">
       <span class="text-[var(--text-color-500)]">布局方式：</span>
       <BaseSelect
         v-model="echoToAdd.layout"
@@ -49,8 +49,14 @@
       />
     </div>
 
+    <!-- 智能压缩 -->
+    <div v-if="imageToAdd.image_source !== ImageSource.URL" class="mb-3 flex items-center">
+      <span class="text-[var(--text-color-500)]">智能压缩：</span>
+      <BaseSwitch v-model="enableCompressor" />
+    </div>
+
     <!-- 当前上传方式与状态 -->
-    <div class="text-[var(--text-color-300)] text-sm mb-1">
+    <div class="text-[var(--text-color-300)] text-sm mb-2">
       当前上传方式为
       <span class="font-bold">
         {{
@@ -87,6 +93,7 @@
       <TheUppy
         v-if="imageToAdd.image_source !== ImageSource.URL"
         :TheImageSource="imageToAdd.image_source"
+        :EnableCompressor="enableCompressor"
       />
 
       <!-- 图片直链 -->
@@ -101,6 +108,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useEditorStore, useSettingStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { ImageSource, ImageLayout } from '@/enums/enums'
@@ -110,6 +118,7 @@ import Bucket from '@/components/icons/bucket.vue'
 import Addmore from '@/components/icons/addmore.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseSelect from '@/components/common/BaseSelect.vue'
+import BaseSwitch from '@/components/common/BaseSwitch.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import TheUppy from '@/components/advanced/TheUppy.vue'
 import { localStg } from '@/utils/storage'
@@ -118,6 +127,7 @@ const editorStore = useEditorStore()
 const { imageToAdd, ImageUploading, echoToAdd } = storeToRefs(editorStore)
 const settingStore = useSettingStore()
 const { S3Setting } = storeToRefs(settingStore)
+const enableCompressor = ref<boolean>(false)
 
 const handleSetImageSource = (source: ImageSource) => {
   imageToAdd.value.image_source = source

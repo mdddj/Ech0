@@ -68,7 +68,7 @@ Ech0 is a new-generation open-source self-hosted platform designed for individua
 
 ## Highlights
 
-☁️ **Atomically Lightweight**: Consumes less than **15MB** of memory with an image size under **40MB**, powered by a single-file SQLite architecture  
+☁️ **Atomically Lightweight**: Consumes less than **15MB** of memory with an image size under **50MB**, powered by a single-file SQLite architecture  
 🚀 **Instant Deployment**: Zero configuration required — from installation to operation in just one command  
 ✍️ **Distraction-Free Writing**: A clean, online Markdown editor with rich plugin support and real-time preview  
 📦 **Data Sovereignty**: All content is stored locally in SQLite, with full RSS feed support  
@@ -80,9 +80,11 @@ Ech0 is a new-generation open-source self-hosted platform designed for individua
 🏷️ **Elegant Tag Management & Filtering**: Intelligent tagging system with fast filtering and precise search for effortless organization  
 ☁️ **S3 Storage Integration** — Native support for S3-compatible object storage enables efficient cloud synchronization  
 🌐 **ActivityPub Federation** — Seamlessly federates with Mastodon, Misskey, and other decentralized platforms  
-🔑 **OAuth2 Integration** — Native support for OAuth2, simplifying third-party login and API authorization  
+🔑 **OAuth2 & OIDC Authentication** — Native support for OAuth2 and OIDC protocols, enabling seamless third-party login and API authorization  
+🙈 **Passkey Passwordless Login**: Supports passkey login based on biometrics or hardware keys, greatly enhancing security and login experience  
 🪶 **Highly Available Webhook**: Enables real-time integration and collaboration with external systems, supporting event-driven automated workflows  
 📝 **Built-in Todo Management**: Easily capture and manage daily tasks to stay organized and productive  
+🧘 **Quiet Inbox Mode**: Minimizes system-level interruptions by default—messages are surfaced only as needed, letting the tool assist without intruding.
 🌗 **Dark Mode & Theme Extensions**: Supports adaptive system dark mode or manual switching, with future extensibility for custom color schemes  
 🤖 **Quick Agent AI Setup**: Easily configure multiple large language models for instant AI experience, no manual setup required  
 🧰 **Command-Line Powerhouse**: A built-in high-availability CLI that empowers developers and advanced users with precision control and seamless automation  
@@ -337,6 +339,7 @@ Thank you to all the friends who have supported this project! Your contributions
 |       🧑‍💻 [@Rvn0xsy](https://github.com/Rvn0xsy)       | 2025-11-12 | Great project, I will keep following! |
 |                     🧑‍💻 王贼臣                     | 2025-11-20 | Thanks www.cardopt.cn             |
 |       🧑‍💻 [@ljxme](https://github.com/ljxme)    | 2025-11-30 | Doing my humble part 😋             |
+|       🧑‍💻 [@he9ab2l](https://github.com/he9ab2l)    | 2025-12-23 | None            |
 
 ---
 
