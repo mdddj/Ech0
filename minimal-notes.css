@@ -1,0 +1,976 @@
+/* ═══════════════════════════════════════════════════════════════
+   📝 MINIMAL NOTES THEME - 现代简约笔记风格
+   灵感来源: Notion, Bear, Apple Notes
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══ 导入优雅字体 ═══ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ═══ CSS 变量定义 ═══ */
+:root {
+    /* 主色调 - 温暖的中性色 */
+    --mn-primary: #2c2c2c;
+    --mn-primary-soft: #555555;
+    --mn-accent: #e07a5f;
+    --mn-accent-soft: rgba(224, 122, 95, 0.15);
+    
+    /* 背景色 */
+    --mn-bg: #fafafa;
+    --mn-bg-card: #ffffff;
+    --mn-bg-hover: #f5f5f5;
+    --mn-bg-code: #f8f8f8;
+    
+    /* 边框和分割线 */
+    --mn-border: #e8e8e8;
+    --mn-border-light: #f0f0f0;
+    
+    /* 文字色 */
+    --mn-text: #2c2c2c;
+    --mn-text-secondary: #888888;
+    --mn-text-muted: #aaaaaa;
+    
+    /* 阴影 */
+    --mn-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --mn-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --mn-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+    
+    /* 圆角 */
+    --mn-radius-sm: 6px;
+    --mn-radius: 12px;
+    --mn-radius-lg: 16px;
+}
+
+/* ═══ 暗色模式变量 ═══ */
+html.dark,
+[data-theme="dark"] {
+    --mn-primary: #e8e8e8;
+    --mn-primary-soft: #aaaaaa;
+    --mn-accent: #e07a5f;
+    --mn-accent-soft: rgba(224, 122, 95, 0.2);
+    
+    --mn-bg: #1a1a1a;
+    --mn-bg-card: #242424;
+    --mn-bg-hover: #2a2a2a;
+    --mn-bg-code: #1e1e1e;
+    
+    --mn-border: #333333;
+    --mn-border-light: #2a2a2a;
+    
+    --mn-text: #e8e8e8;
+    --mn-text-secondary: #888888;
+    --mn-text-muted: #666666;
+    
+    --mn-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+    --mn-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --mn-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ═══ 全局基础样式 ═══ */
+html, body {
+    background: var(--mn-bg) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 移除所有伪元素装饰 */
+body::before,
+body::after {
+    display: none !important;
+}
+
+/* ═══ 卡片样式 ═══ */
+.bg-\[var\(--card-color\)\],
+.widget,
+.max-w-sm.shadow {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border-light) !important;
+    border-radius: var(--mn-radius) !important;
+    box-shadow: var(--mn-shadow-sm) !important;
+    transition: all 0.2s ease;
+}
+
+.bg-\[var\(--card-color\)\]:hover,
+.widget:hover {
+    box-shadow: var(--mn-shadow) !important;
+}
+
+/* 移除卡片伪元素装饰 */
+.bg-\[var\(--card-color\)\]::before,
+.bg-\[var\(--card-color\)\]::after,
+.widget::before,
+.widget::after {
+    display: none !important;
+}
+
+/* ═══ 标题样式 ═══ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif SC', 'Inter', serif !important;
+    color: var(--mn-text) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em;
+    text-shadow: none !important;
+    text-transform: none !important;
+    animation: none !important;
+}
+
+h1 { font-size: 1.75rem; margin-bottom: 1rem; }
+h2 { font-size: 1.5rem; margin-bottom: 0.875rem; }
+h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+
+/* 侧边栏卡片标题 */
+.widget h3,
+.widget h4,
+.widget .font-bold:first-child,
+.max-w-sm h3,
+.max-w-sm h4 {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--mn-text-secondary) !important;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 主标题「梁典典的代码笔记」样式 */
+.widget > div:first-child .font-bold,
+[class*="TheProfile"] .font-bold {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: var(--mn-text) !important;
+    font-family: 'Noto Serif SC', serif !important;
+}
+
+/* ═══ 用户名和粗体文字 ═══ */
+.font-bold {
+    color: var(--mn-text) !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+    animation: none !important;
+}
+
+/* ═══ 次要文字 ═══ */
+.text-slate-500,
+.text-gray-500,
+[class*="text-\[#5b7083\]"] {
+    color: var(--mn-text-secondary) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.875rem;
+}
+
+/* ═══ 按钮样式 ═══ */
+[type="submit"],
+.btn,
+button.rounded-full:not([class*="md-editor"]):not([class*="toolbar"]) {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500;
+    border-radius: var(--mn-radius-sm) !important;
+    padding: 8px 16px;
+    transition: all 0.15s ease;
+    box-shadow: none !important;
+}
+
+[type="submit"]:hover,
+.btn:hover {
+    background: var(--mn-accent) !important;
+    border-color: var(--mn-accent) !important;
+    color: white !important;
+    box-shadow: var(--mn-shadow-sm) !important;
+}
+
+/* 编辑器工具栏按钮 */
+.md-editor button,
+[class*="toolbar"] button,
+[class*="TheEditor"] button:not([type="submit"]) {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--mn-text-secondary) !important;
+    border-radius: var(--mn-radius-sm) !important;
+}
+
+.md-editor button:hover,
+[class*="toolbar"] button:hover {
+    background: var(--mn-bg-hover) !important;
+    color: var(--mn-text) !important;
+}
+
+/* ═══ 输入框样式 ═══ */
+input,
+textarea,
+select {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', sans-serif !important;
+    border-radius: var(--mn-radius-sm) !important;
+    padding: 10px 14px;
+    transition: all 0.15s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    border-color: var(--mn-accent) !important;
+    box-shadow: 0 0 0 3px var(--mn-accent-soft) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--mn-text-muted) !important;
+}
+
+/* ═══ 链接样式 ═══ */
+a {
+    color: var(--mn-accent) !important;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+}
+
+a:hover {
+    opacity: 0.8;
+    text-shadow: none !important;
+}
+
+/* ═══ 图片样式 ═══ */
+.md-editor-preview img,
+[class*="TheImageGallery"] img,
+[class*="gallery"] img {
+    border: none !important;
+    border-radius: var(--mn-radius) !important;
+    box-shadow: var(--mn-shadow) !important;
+}
+
+img.rounded-full {
+    border: 2px solid var(--mn-border-light) !important;
+    box-shadow: var(--mn-shadow-sm) !important;
+}
+
+/* ═══ 滚动条样式 ═══ */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--mn-border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--mn-text-muted);
+}
+
+/* ═══ 日期时间样式 ═══ */
+.text-sm {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--mn-text-secondary) !important;
+    font-size: 0.8125rem;
+}
+
+/* ═══ 标签样式 ═══ */
+span[class*="truncate"] {
+    color: var(--mn-accent) !important;
+    background: var(--mn-accent-soft) !important;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: none !important;
+    font-size: 0.8125rem;
+}
+
+/* ═══ 图标样式 ═══ */
+svg {
+    filter: none !important;
+}
+
+/* ═══ Markdown 预览样式 ═══ */
+.md-editor,
+.md-editor-preview,
+#preview-only {
+    background: transparent !important;
+    color: var(--mn-text) !important;
+    font-family: 'Noto Serif SC', 'Inter', serif !important;
+    line-height: 1.8;
+}
+
+.md-editor-preview code,
+.md-editor code {
+    background: var(--mn-bg-code) !important;
+    color: var(--mn-accent) !important;
+    border: none !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.875em;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.md-editor-preview pre,
+.md-editor pre {
+    background: var(--mn-bg-code) !important;
+    border: 1px solid var(--mn-border-light) !important;
+    border-radius: var(--mn-radius-sm) !important;
+    box-shadow: none !important;
+}
+
+/* 代码块内的代码 - 统一配色 */
+.md-editor-preview pre code,
+.md-editor pre code,
+pre code {
+    color: #5c6370 !important;
+    background: transparent !important;
+}
+
+/* 代码高亮 - 柔和配色 */
+.md-editor-preview pre code .hljs-keyword,
+pre code .hljs-keyword,
+pre code .token.keyword {
+    color: #a855f7 !important;
+}
+
+.md-editor-preview pre code .hljs-string,
+pre code .hljs-string,
+pre code .token.string {
+    color: #22c55e !important;
+}
+
+.md-editor-preview pre code .hljs-comment,
+pre code .hljs-comment,
+pre code .token.comment {
+    color: #9ca3af !important;
+    font-style: italic;
+}
+
+.md-editor-preview pre code .hljs-function,
+pre code .hljs-function,
+pre code .token.function {
+    color: #3b82f6 !important;
+}
+
+.md-editor-preview pre code .hljs-number,
+pre code .hljs-number,
+pre code .token.number {
+    color: #f59e0b !important;
+}
+
+.md-editor-preview pre code .hljs-variable,
+pre code .hljs-variable,
+pre code .token.variable {
+    color: var(--mn-accent) !important;
+}
+
+/* 代码块头部样式 */
+.md-editor-preview [class*="code-block"],
+[class*="code-block-header"],
+pre > div:first-child {
+    background: var(--mn-bg-hover) !important;
+    border-bottom: 1px solid var(--mn-border-light) !important;
+}
+
+/* 代码块的红绿黄圆点 - 改成灰色调 */
+[class*="code-block"] span[style*="background"],
+pre span[style*="rgb(255, 95, 86)"],
+pre span[style*="rgb(255, 189, 46)"],
+pre span[style*="rgb(39, 201, 63)"] {
+    filter: grayscale(0.5) opacity(0.6) !important;
+}
+
+/* ═══ 通知样式 ═══ */
+[data-sonner-toast] {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', sans-serif !important;
+    border-radius: var(--mn-radius) !important;
+    box-shadow: var(--mn-shadow-lg) !important;
+}
+
+/* ═══ 对话框样式 ═══ */
+[role="dialog"],
+.dialog,
+.modal {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    border-radius: var(--mn-radius-lg) !important;
+    box-shadow: var(--mn-shadow-lg) !important;
+}
+
+/* ═══ 顶部导航栏 ═══ */
+nav,
+header,
+[class*="TheTop"] {
+    background: rgba(250, 250, 250, 0.85) !important;
+    border-bottom: 1px solid var(--mn-border-light) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+html.dark nav,
+html.dark header,
+html.dark [class*="TheTop"],
+[data-theme="dark"] nav,
+[data-theme="dark"] header {
+    background: rgba(26, 26, 26, 0.85) !important;
+}
+
+/* 搜索框优化 */
+nav input,
+header input,
+[class*="TheTop"] input {
+    background: var(--mn-bg-hover) !important;
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 8px 16px !important;
+}
+
+nav input:focus,
+header input:focus {
+    box-shadow: 0 0 0 2px var(--mn-accent-soft) !important;
+}
+
+/* ═══ 底部装饰 - 移除 ═══ */
+main::after {
+    display: none !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   📇 笔记卡片效果 - NOTE CARDS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 笔记卡片容器 */
+.will-change-transform {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border-light) !important;
+    border-radius: var(--mn-radius) !important;
+    margin-bottom: 16px;
+    padding: 20px;
+    position: relative;
+    box-shadow: var(--mn-shadow-sm) !important;
+    transition: all 0.2s ease;
+}
+
+.will-change-transform:hover {
+    box-shadow: var(--mn-shadow) !important;
+    transform: translateY(-1px);
+}
+
+/* 移除卡片装饰 */
+.will-change-transform::before,
+.will-change-transform::after {
+    display: none !important;
+}
+
+/* 时间线小点 */
+.will-change-transform .w-2.h-2.rounded-full {
+    width: 8px !important;
+    height: 8px !important;
+    background: var(--mn-accent) !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+/* 日期时间样式 */
+.will-change-transform .text-sm.text-nowrap {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--mn-text-secondary) !important;
+    font-size: 0.75rem;
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* 操作按钮组 */
+.will-change-transform .rounded-full.shadow-sm {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    box-shadow: none !important;
+}
+
+.will-change-transform .rounded-full.shadow-sm:hover {
+    background: var(--mn-bg-hover) !important;
+}
+
+/* 加载更多按钮 */
+.rounded-full.bg-\[var\(--timeline-load-more-bg-color\)\] {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    border-radius: var(--mn-radius-sm) !important;
+}
+
+.rounded-full.bg-\[var\(--timeline-load-more-bg-color\)\]:hover {
+    background: var(--mn-accent) !important;
+    border-color: var(--mn-accent) !important;
+    color: white !important;
+    box-shadow: var(--mn-shadow-sm) !important;
+}
+
+/* 没有更多提示 */
+.text-xl.text-\[var\(--text-color-400\)\] {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--mn-text-muted) !important;
+    font-size: 0.875rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   🎚️ 其他组件样式
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 热力图 */
+.w-5.h-5.rounded-\[6px\] {
+    border: none !important;
+    border-radius: 3px !important;
+    transition: transform 0.15s ease;
+}
+
+.w-5.h-5.rounded-\[6px\]:hover {
+    transform: scale(1.1);
+    box-shadow: none !important;
+}
+
+/* 热力图颜色 - 使用主题色调 */
+.w-5.h-5.rounded-\[6px\][style*="background"] {
+    filter: hue-rotate(330deg) saturate(0.8) !important;
+}
+
+/* 热力图 tooltip */
+.bg-orange-500 {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', sans-serif !important;
+    border-radius: var(--mn-radius-sm) !important;
+    box-shadow: var(--mn-shadow) !important;
+}
+
+/* 编辑器区域 */
+.bg-\[var\(--editor-bg-color\)\] {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    border-radius: var(--mn-radius) !important;
+    box-shadow: var(--mn-shadow-sm) !important;
+}
+
+.bg-\[var\(--editor-bg-color\)\]::before {
+    display: none !important;
+}
+
+/* GitHub 卡片 */
+.max-w-sm.flex.justify-center.items-center.bg-\[var\(--card-color\)\] {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border-light) !important;
+    border-radius: var(--mn-radius) !important;
+    box-shadow: var(--mn-shadow-sm) !important;
+}
+
+.max-w-sm.flex.justify-center.items-center.bg-\[var\(--card-color\)\]:hover {
+    box-shadow: var(--mn-shadow) !important;
+}
+
+/* 音频播放器按钮 */
+.bg-\[var\(--player-button-bg-color\)\],
+button.rounded-full.shadow-sm {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    box-shadow: none !important;
+}
+
+.bg-\[var\(--player-button-bg-color\)\]:hover,
+button.rounded-full.shadow-sm:hover {
+    background: var(--mn-bg-hover) !important;
+    box-shadow: none !important;
+}
+
+/* 返回顶部按钮 */
+[class*="TheBackTop"],
+.fixed.bottom-4.right-4 {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    border-radius: var(--mn-radius) !important;
+    box-shadow: var(--mn-shadow) !important;
+}
+
+/* 数据统计数字 */
+.text-2xl.font-bold,
+.text-xl.font-bold {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    color: var(--mn-text) !important;
+    text-shadow: none !important;
+}
+
+/* 图片画廊 */
+[class*="TheImageGallery"] {
+    border-radius: var(--mn-radius) !important;
+    overflow: hidden;
+}
+
+[class*="TheImageGallery"] img {
+    transition: transform 0.2s ease;
+}
+
+[class*="TheImageGallery"] img:hover {
+    transform: scale(1.02);
+}
+
+/* 视频卡片 */
+[class*="TheVideoCard"] {
+    border: 1px solid var(--mn-border-light) !important;
+    border-radius: var(--mn-radius) !important;
+    overflow: hidden;
+    box-shadow: var(--mn-shadow-sm) !important;
+}
+
+/* 评论区 */
+[class*="TheComment"] {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border-light) !important;
+    border-radius: var(--mn-radius-sm) !important;
+}
+
+/* 分割线 */
+hr {
+    border: none;
+    height: 1px;
+    background: var(--mn-border-light);
+    margin: 24px 0;
+}
+
+/* 引用块 */
+blockquote {
+    border-left: 3px solid var(--mn-accent) !important;
+    background: var(--mn-accent-soft) !important;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 var(--mn-radius-sm) var(--mn-radius-sm) 0;
+    font-style: normal;
+    color: var(--mn-text);
+}
+
+/* 表格 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: var(--mn-bg-card);
+    border-radius: var(--mn-radius-sm);
+    overflow: hidden;
+}
+
+th {
+    background: var(--mn-bg-hover) !important;
+    color: var(--mn-text) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+td {
+    padding: 12px 16px;
+    border-top: 1px solid var(--mn-border-light);
+}
+
+tr:hover td {
+    background: var(--mn-bg-hover);
+}
+
+/* 列表样式 */
+ul, ol {
+    padding-left: 1.5em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+li::marker {
+    color: var(--mn-accent);
+}
+
+/* 选中文字 */
+::selection {
+    background: var(--mn-accent-soft);
+    color: var(--mn-text);
+}
+
+/* 加载动画 */
+#app-loader {
+    background: var(--mn-bg) !important;
+    color: var(--mn-text) !important;
+}
+
+.loader::before {
+    border-top-color: var(--mn-accent) !important;
+    box-shadow: none !important;
+}
+
+/* 验证徽章 */
+.text-sky-500 {
+    color: var(--mn-accent) !important;
+    filter: none !important;
+}
+
+/* 连接组件头像 */
+.flex-wrap > div.rounded-full,
+.flex-wrap .border-2 {
+    background: transparent !important;
+    border-color: var(--mn-border) !important;
+    box-shadow: none !important;
+}
+
+/* 状态指示器 */
+.widget.ring-1 {
+    --tw-ring-color: var(--mn-border) !important;
+}
+
+/* 系统状态文字 */
+.font-serif {
+    font-family: 'Noto Serif SC', serif !important;
+    color: var(--mn-text-secondary) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🎨 额外优化
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 近况总结卡片 */
+[class*="summary"],
+.widget p {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--mn-text-secondary);
+}
+
+/* 连接头像优化 */
+.flex-wrap img.rounded-full,
+[class*="TheConnects"] img {
+    transition: transform 0.2s ease;
+}
+
+.flex-wrap img.rounded-full:hover,
+[class*="TheConnects"] img:hover {
+    transform: scale(1.1);
+}
+
+/* 待办事项样式 */
+.widget [class*="todo"],
+.widget li {
+    font-size: 0.875rem;
+    color: var(--mn-text-secondary);
+}
+
+/* 编辑器优化 */
+.bg-\[var\(--editor-bg-color\)\] {
+    border-radius: var(--mn-radius-lg) !important;
+}
+
+/* 编辑器工具栏 */
+.bg-\[var\(--editor-bg-color\)\] > div:first-child {
+    border-bottom: 1px solid var(--mn-border-light);
+    padding: 8px 12px;
+}
+
+/* 编辑器文本区域 */
+.bg-\[var\(--editor-bg-color\)\] textarea {
+    font-family: 'Noto Serif SC', 'Inter', serif !important;
+    font-size: 0.9375rem;
+    line-height: 1.8;
+}
+
+/* 标签输入框 */
+.bg-\[var\(--editor-bg-color\)\] input[placeholder*="标签"],
+.bg-\[var\(--editor-bg-color\)\] input[placeholder*="tag"] {
+    border: 1px dashed var(--mn-border) !important;
+    border-radius: 20px !important;
+    font-size: 0.8125rem;
+}
+
+/* 发布按钮 */
+.bg-\[var\(--editor-bg-color\)\] button[type="submit"],
+.bg-\[var\(--editor-bg-color\)\] .rounded-full:last-child {
+    background: var(--mn-accent) !important;
+    border-color: var(--mn-accent) !important;
+    color: white !important;
+    font-weight: 500;
+}
+
+/* 笔记卡片内的内容 */
+.will-change-transform p,
+.will-change-transform .md-editor-preview {
+    font-size: 0.9375rem;
+    line-height: 1.8;
+}
+
+/* 笔记卡片标题 */
+.will-change-transform h1,
+.will-change-transform h2,
+.will-change-transform h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* 时间显示优化 */
+.will-change-transform time,
+.will-change-transform .text-sm {
+    font-size: 0.75rem;
+    color: var(--mn-text-muted) !important;
+}
+
+/* 操作图标 */
+.will-change-transform svg {
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+.will-change-transform:hover svg {
+    opacity: 0.8;
+}
+
+/* RSS/订阅图标区域 */
+nav svg,
+header svg,
+[class*="TheTop"] svg {
+    opacity: 0.6;
+}
+
+nav svg:hover,
+header svg:hover {
+    opacity: 1;
+}
+
+/* 暗色模式下的代码块 */
+html.dark .md-editor-preview pre,
+html.dark .md-editor pre,
+html.dark pre,
+[data-theme="dark"] pre {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+}
+
+html.dark .md-editor-preview pre code,
+html.dark pre code,
+[data-theme="dark"] pre code {
+    color: #abb2bf !important;
+}
+
+/* 暗色模式代码高亮 */
+html.dark pre code .hljs-keyword,
+html.dark pre code .token.keyword,
+[data-theme="dark"] pre code .hljs-keyword {
+    color: #c678dd !important;
+}
+
+html.dark pre code .hljs-string,
+html.dark pre code .token.string,
+[data-theme="dark"] pre code .hljs-string {
+    color: #98c379 !important;
+}
+
+html.dark pre code .hljs-function,
+html.dark pre code .token.function,
+[data-theme="dark"] pre code .hljs-function {
+    color: #61afef !important;
+}
+
+/* 页面整体呼吸感 */
+main {
+    padding-top: 8px;
+}
+
+/* 卡片间距优化 */
+.will-change-transform + .will-change-transform {
+    margin-top: 12px;
+}
+
+/* 侧边栏卡片间距 */
+.widget + .widget,
+.max-w-sm + .max-w-sm {
+    margin-top: 12px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   💬 Twikoo 评论区样式修复
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 评论区容器 - 重置背景 */
+.tk-comments,
+.tk-submit-wrapper,
+.tk-row,
+.tk-meta-input,
+.tk-content,
+#twikoo,
+.twikoo {
+    background: transparent !important;
+}
+
+/* 输入框组 - 昵称/邮箱/网址的标签 */
+.tk-meta-input .el-input-group__prepend {
+    background: #f0f0f0 !important;
+    border: 1px solid var(--mn-border) !important;
+    border-right: none !important;
+    color: var(--mn-text-secondary) !important;
+    font-size: 0.8125rem;
+    padding: 0 12px;
+    border-radius: 6px 0 0 6px !important;
+}
+
+/* 输入框本身 */
+.tk-meta-input .el-input__inner {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    border-radius: 0 6px 6px 0 !important;
+}
+
+/* 评论文本框 */
+.tk-input .el-textarea__inner {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    border-radius: 6px !important;
+    color: var(--mn-text) !important;
+}
+
+.tk-input .el-textarea__inner:focus {
+    border-color: var(--mn-accent) !important;
+}
+
+/* 发送按钮 */
+.tk-submit .el-button--primary {
+    background: var(--mn-accent) !important;
+    border-color: var(--mn-accent) !important;
+    color: white !important;
+    border-radius: 6px !important;
+}
+
+/* 预览按钮 */
+.tk-submit .el-button--default {
+    background: var(--mn-bg-card) !important;
+    border: 1px solid var(--mn-border) !important;
+    color: var(--mn-text) !important;
+    border-radius: 6px !important;
+}
+
+/* 暗色模式 */
+html.dark .tk-meta-input .el-input-group__prepend,
+[data-theme="dark"] .tk-meta-input .el-input-group__prepend {
+    background: #333 !important;
+    border-color: #444 !important;
+}
