@@ -974,3 +974,83 @@ html.dark .tk-meta-input .el-input-group__prepend,
     background: #333 !important;
     border-color: #444 !important;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   📱 移动端响应式优化
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 移动端容器宽度 */
+@media (max-width: 768px) {
+    /* 主容器减少边距 */
+    main,
+    .container,
+    [class*="container"] {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+    
+    /* 卡片减少内边距和外边距 */
+    .will-change-transform,
+    .bg-\[var\(--card-color\)\],
+    .widget {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 14px !important;
+        border-radius: 10px !important;
+    }
+    
+    /* 编辑器卡片 */
+    .bg-\[var\(--editor-bg-color\)\] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 10px !important;
+    }
+    
+    /* 代码块减少内边距 */
+    .md-editor-preview pre,
+    .md-editor pre,
+    pre {
+        padding: 12px !important;
+        font-size: 0.8125rem !important;
+        border-radius: 8px !important;
+    }
+    
+    /* 代码块内容可横向滚动 */
+    .md-editor-preview pre code,
+    pre code {
+        white-space: pre !important;
+        word-break: normal !important;
+    }
+    
+    /* 笔记卡片间距 */
+    .will-change-transform + .will-change-transform {
+        margin-top: 10px;
+    }
+}
+
+/* 大屏手机 (375px - 428px) */
+@media (min-width: 375px) and (max-width: 428px) {
+    main,
+    .container,
+    [class*="container"] {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
+    .will-change-transform,
+    .bg-\[var\(--card-color\)\],
+    .widget {
+        padding: 16px !important;
+    }
+}
+
+/* 平板 (428px - 768px) */
+@media (min-width: 428px) and (max-width: 768px) {
+    main,
+    .container,
+    [class*="container"] {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+}
