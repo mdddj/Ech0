@@ -33,8 +33,14 @@ export const useThemeStore = defineStore('themeStore', () => {
     localStg.setItem('themeMode', mode.value)
   }
 
+  // 防抖标志：防止动画过程中重复触发
+  let isTransitioning = false
+
   // 带扩散动画的主题切换
   const toggleTheme = async (event?: MouseEvent) => {
+    // 防抖：如果正在过渡中，忽略此次点击
+    if (isTransitioning) return
+
     // 获取点击坐标，如果没有事件则从屏幕中心扩散
     const x = event?.clientX ?? window.innerWidth / 2
     const y = event?.clientY ?? window.innerHeight / 2
@@ -45,13 +51,18 @@ export const useThemeStore = defineStore('themeStore', () => {
       Math.max(y, window.innerHeight - y),
     )
 
+    // 检查用户是否开启了"减少动画"偏好设置（可访问性）
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     // 检查浏览器是否支持 View Transitions API
     // @ts-expect-error View Transitions API 类型支持
-    if (!document.startViewTransition) {
-      // 降级处理：直接切换
+    if (prefersReducedMotion || !document.startViewTransition) {
+      // 降级处理：直接切换，无动画
       applyThemeToggle()
       return
     }
+
+    isTransitioning = true
 
     // 使用 View Transitions API
     // @ts-expect-error View Transitions API 类型支持
@@ -61,17 +72,25 @@ export const useThemeStore = defineStore('themeStore', () => {
 
     await transition.ready
 
-    // 执行圆形扩散动画
-    document.documentElement.animate(
+    // 统一使用扩散动画：新主题从点击位置向外扩散覆盖旧主题
+    const animation = document.documentElement.animate(
       {
-        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`],
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${endRadius}px at ${x}px ${y}px)`,
+        ],
       },
       {
-        duration: 400,
-        easing: 'ease-out',
+        duration: 500,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
         pseudoElement: '::view-transition-new(root)',
       },
     )
+
+    // 等待动画完成
+    await animation.finished
+    await transition.finished
+    isTransitioning = false
   }
 
   const applyTheme = () => {
