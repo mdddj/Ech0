@@ -55,8 +55,18 @@ export const useThemeStore = defineStore('themeStore', () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     // 检查浏览器是否支持 View Transitions API
-    // @ts-ignore View Transitions API
-    if (prefersReducedMotion || !document.startViewTransition) {
+    type ViewTransitionLike = {
+      ready: Promise<void>
+      finished: Promise<void>
+      updateCallbackDone?: Promise<void>
+    }
+    const startViewTransition = (
+      document as Document & {
+        startViewTransition?: (callback: () => void) => ViewTransitionLike
+      }
+    ).startViewTransition?.bind(document)
+
+    if (prefersReducedMotion || !startViewTransition) {
       // 降级处理：直接切换，无动画
       applyThemeToggle()
       return
@@ -65,8 +75,7 @@ export const useThemeStore = defineStore('themeStore', () => {
     isTransitioning = true
 
     // 使用 View Transitions API
-    // @ts-ignore View Transitions API
-    const transition = document.startViewTransition(() => {
+    const transition = startViewTransition(() => {
       applyThemeToggle()
     })
 
