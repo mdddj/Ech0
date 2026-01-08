@@ -28,11 +28,21 @@ export const getImageToAddUrl = (image: App.Api.Ech0.ImageToAdd) => {
   }
 }
 
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateInput: string | number) => {
   // 当天则显示（时：分）
   // 非当天但是三内天则显示几天前
   // 超过三天则显示（时：分 年月日）
-  const date = new Date(dateString)
+
+  // 处理 Unix 时间戳（秒或毫秒）和日期字符串
+  let date: Date
+  if (typeof dateInput === 'number') {
+    // 如果是数字，判断是秒级还是毫秒级时间戳
+    // 秒级时间戳通常小于 10^12，毫秒级时间戳通常大于 10^12
+    date = new Date(dateInput < 1e12 ? dateInput * 1000 : dateInput)
+  } else {
+    date = new Date(dateInput)
+  }
+
   const now = new Date()
   const diff = now.getTime() - date.getTime()
   const diffInDays = Math.floor(diff / (1000 * 60 * 60 * 24))
@@ -207,7 +217,7 @@ export const getHubImageUrl = (image: App.Api.Ech0.Image, baseurl: string) => {
  * Base64URL to Uint8Array
  * 用于解析服务端返回的 WebAuthn publicKey
  */
-export function base64urlToUint8Array(input: string): Uint8Array<ArrayBuffer> {
+export function base64urlToUint8Array(input: string): Uint8Array {
   const base64 = input.replace(/-/g, '+').replace(/_/g, '/')
   const pad = base64.length % 4 === 0 ? '' : '='.repeat(4 - (base64.length % 4))
   const binary = atob(base64 + pad)

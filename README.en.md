@@ -340,6 +340,7 @@ Thank you to all the friends who have supported this project! Your contributions
 |                     🧑‍💻 王贼臣                     | 2025-11-20 | Thanks www.cardopt.cn             |
 |       🧑‍💻 [@ljxme](https://github.com/ljxme)    | 2025-11-30 | Doing my humble part 😋             |
 |       🧑‍💻 [@he9ab2l](https://github.com/he9ab2l)    | 2025-12-23 | None            |
+|       🧑‍💻 鸿运当头(windfore)    | 2026-1-6 | Thank you for creating ech0           |
 
 ---
 
