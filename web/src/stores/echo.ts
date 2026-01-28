@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import { fetchGetEchosByPage, fetchGetTags, fetchGetEchosByTagId } from '@/service/api'
+import { localStg } from '@/utils/storage'
 
 export const useEchoStore = defineStore('echoStore', () => {
   /**
@@ -41,6 +42,16 @@ export const useEchoStore = defineStore('echoStore', () => {
   const filteredSearchingMode = computed(() => {
     return filteredSearchValue.value.length > 0
   }) // 过滤后是否处于搜索模式
+
+  // 动态列表布局模式：'list' 或 'waterfall'
+  // 从 localStorage 读取保存的布局模式，默认为瀑布流
+  const savedLayoutMode = localStg.getItem<'list' | 'waterfall'>('listLayoutMode')
+  const listLayoutMode = ref<'list' | 'waterfall'>(savedLayoutMode || 'waterfall')
+
+  // 监听布局模式变化，保存到 localStorage
+  watch(listLayoutMode, (newMode) => {
+    localStg.setItem('listLayoutMode', newMode)
+  })
 
   // 监听 searchingMode 的变化
   watch(searchingMode, (newValue, oldValue) => {
@@ -228,6 +239,7 @@ export const useEchoStore = defineStore('echoStore', () => {
     filteredHasMore,
     filteredTag,
     filteredSearchingMode,
+    listLayoutMode,
     refreshForFilterSearch,
     getEchosByPageForFilter,
     refreshEchosForFilter,

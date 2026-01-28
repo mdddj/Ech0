@@ -323,6 +323,7 @@ declare namespace App {
         api_key: string
         prompt: string
         base_url: string
+        stream_enable: boolean
       }
 
       type AgentSettingDto = {
@@ -332,6 +333,7 @@ declare namespace App {
         api_key: string
         prompt: string
         base_url: string
+        stream_enable: boolean
       }
     }
 

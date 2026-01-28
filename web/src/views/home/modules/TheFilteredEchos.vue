@@ -1,10 +1,11 @@
 <template>
   <div class="mx-auto px-2 sm:px-4 md:px-6 my-4 sm:my-5 md:my-6">
-    <!-- Echos - 使用 TransitionGroup 实现入场动画 -->
+    <!-- Echos - 列表布局 -->
     <TransitionGroup
       v-if="echoStore.filteredEchoList"
       name="list"
       tag="div"
+      class="space-y-4"
       @before-enter="onBeforeEnter"
       @enter="onEnter"
     >

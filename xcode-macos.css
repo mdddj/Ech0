@@ -1,486 +1,194 @@
 /* ═══════════════════════════════════════════════════════════════
-   🍎 XCODE macOS THEME - macOS 风格主题
-   灵感来源: Xcode, macOS Sonoma, SF Pro
+   🍎 XCODE macOS THEME v2.0 - 大胆现代设计
+   灵感来源: macOS Sonoma, Xcode 15, Apple Design
    ═══════════════════════════════════════════════════════════════ */
 
-/* ═══ 导入 SF Pro 风格字体 ═══ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ═══ CSS 变量定义 - 浅色模式 ═══ */
+/* ═══ CSS 变量 - 浅色模式 ═══ */
 :root {
+    /* Apple 彩虹渐变 */
+    --apple-gradient: linear-gradient(135deg, #FF6B6B, #FF8E53, #FFCD56, #4ECB71, #45B7D1, #7B68EE, #FF6B9D);
+    --apple-gradient-soft: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(69,183,209,0.15), rgba(123,104,238,0.15));
+    
     /* macOS 系统色 */
     --mac-blue: #007AFF;
     --mac-purple: #AF52DE;
-    --mac-pink: #FF2D55;
+    --mac-pink: #FF2D92;
     --mac-red: #FF3B30;
     --mac-orange: #FF9500;
     --mac-yellow: #FFCC00;
-    --mac-green: #34C759;
-    --mac-teal: #5AC8FA;
+    --mac-green: #30D158;
+    --mac-teal: #64D2FF;
+    --mac-indigo: #5E5CE6;
     
-    /* 窗口控制按钮 */
-    --mac-btn-close: #FF5F57;
-    --mac-btn-minimize: #FEBC2E;
-    --mac-btn-maximize: #28C840;
-    
-    /* 背景色 */
-    --mac-bg: #F5F5F7;
-    --mac-bg-secondary: #FFFFFF;
+    /* 背景 - 更大胆的渐变 */
+    --mac-bg: linear-gradient(180deg, #F8F9FC 0%, #EEF1F8 50%, #E8ECF4 100%);
+    --mac-bg-solid: #F5F5F7;
+    --mac-bg-card: rgba(255, 255, 255, 0.85);
+    --mac-bg-card-hover: rgba(255, 255, 255, 0.95);
     --mac-bg-tertiary: #E8E8ED;
-    --mac-sidebar: rgba(246, 246, 246, 0.8);
     
-    /* 文字色 */
+    /* 文字 */
     --mac-text: #1D1D1F;
-    --mac-text-secondary: #86868B;
+    --mac-text-secondary: #6E6E73;
     --mac-text-tertiary: #AEAEB2;
     
-    /* 边框和分割线 */
-    --mac-border: rgba(0, 0, 0, 0.1);
-    --mac-divider: rgba(0, 0, 0, 0.06);
-    
-    /* 阴影 */
-    --mac-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-    --mac-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --mac-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --mac-shadow-window: 0 22px 70px 4px rgba(0, 0, 0, 0.15);
+    /* 边框和阴影 */
+    --mac-border: rgba(0, 0, 0, 0.08);
+    --mac-border-light: rgba(0, 0, 0, 0.04);
+    --mac-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+    --mac-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.05), 0 20px 40px rgba(0, 0, 0, 0.1);
+    --mac-shadow-glow: 0 0 40px rgba(0, 122, 255, 0.15);
     
     /* 圆角 */
-    --mac-radius-sm: 6px;
-    --mac-radius: 10px;
-    --mac-radius-lg: 14px;
-    --mac-radius-xl: 18px;
+    --mac-radius: 16px;
+    --mac-radius-lg: 20px;
+    --mac-radius-xl: 24px;
     
-    /* Xcode 代码配色 - 浅色 */
+    /* Xcode 代码配色 */
     --xcode-keyword: #9B2393;
     --xcode-string: #C41A16;
     --xcode-number: #1C00CF;
     --xcode-comment: #5D6C79;
     --xcode-function: #326D74;
-    --xcode-type: #0B4F79;
-    --xcode-variable: #3F6E74;
-    --xcode-bg: #FFFFFF;
 }
 
-/* ═══ 暗色模式变量 ═══ */
-html.dark,
-[data-theme="dark"] {
-    --mac-bg: #1E1E1E;
-    --mac-bg-secondary: #2D2D2D;
-    --mac-bg-tertiary: #3D3D3D;
-    --mac-sidebar: rgba(30, 30, 30, 0.8);
+/* ═══ 暗色模式 ═══ */
+html.dark, [data-theme="dark"] {
+    --mac-bg: linear-gradient(180deg, #0D0D0F 0%, #141416 50%, #1A1A1C 100%);
+    --mac-bg-solid: #1C1C1E;
+    --mac-bg-card: rgba(44, 44, 46, 0.8);
+    --mac-bg-card-hover: rgba(58, 58, 60, 0.9);
+    --mac-bg-tertiary: #2C2C2E;
     
     --mac-text: #F5F5F7;
-    --mac-text-secondary: #A1A1A6;
-    --mac-text-tertiary: #6E6E73;
+    --mac-text-secondary: #98989D;
+    --mac-text-tertiary: #636366;
     
     --mac-border: rgba(255, 255, 255, 0.1);
-    --mac-divider: rgba(255, 255, 255, 0.06);
+    --mac-border-light: rgba(255, 255, 255, 0.05);
+    --mac-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.3);
+    --mac-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.3), 0 20px 40px rgba(0, 0, 0, 0.5);
+    --mac-shadow-glow: 0 0 60px rgba(94, 92, 230, 0.2);
     
-    --mac-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --mac-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --mac-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
-    --mac-shadow-window: 0 22px 70px 4px rgba(0, 0, 0, 0.5);
-    
-    /* Xcode 代码配色 - 深色 (Xcode Default Dark) */
     --xcode-keyword: #FF7AB2;
     --xcode-string: #FF8170;
     --xcode-number: #D0BF69;
     --xcode-comment: #7F8C98;
     --xcode-function: #67B7A4;
-    --xcode-type: #6BDFFF;
-    --xcode-variable: #41A1C0;
-    --xcode-bg: #1F1F24;
 }
 
-/* ═══ 全局基础样式 ═══ */
+/* ═══ 全局基础 ═══ */
 html, body {
     background: var(--mac-bg) !important;
+    background-attachment: fixed !important;
     color: var(--mac-text) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif !important;
-    font-size: 14px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.01em;
-}
-
-/* 移除所有伪元素装饰 */
-body::before,
-body::after,
-main::after {
-    display: none !important;
-}
-
-/* ═══ macOS 窗口卡片样式 ═══ */
-.bg-\[var\(--card-color\)\],
-.widget,
-.max-w-sm.shadow {
-    background: var(--mac-bg-secondary) !important;
-    border: 1px solid var(--mac-border) !important;
-    border-radius: var(--mac-radius-lg) !important;
-    box-shadow: var(--mac-shadow) !important;
-    position: relative;
-    overflow: hidden;
-}
-
-/* 移除原有伪元素 */
-.bg-\[var\(--card-color\)\]::before,
-.bg-\[var\(--card-color\)\]::after,
-.widget::before,
-.widget::after {
-    display: none !important;
-}
-
-/* ═══ 标题样式 ═══ */
-h1, h2, h3, h4, h5, h6 {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif !important;
-    color: var(--mac-text) !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.02em;
-    text-shadow: none !important;
-    text-transform: none !important;
-    animation: none !important;
-}
-
-h1 { font-size: 1.625rem; font-weight: 700 !important; }
-h2 { font-size: 1.375rem; }
-h3 { font-size: 1.125rem; }
-
-/* ═══ 用户名和粗体 ═══ */
-.font-bold {
-    color: var(--mac-text) !important;
-    font-weight: 600 !important;
-    text-shadow: none !important;
-    animation: none !important;
-}
-
-/* ═══ 次要文字 ═══ */
-.text-slate-500,
-.text-gray-500,
-[class*="text-\[#5b7083\]"] {
-    color: var(--mac-text-secondary) !important;
-    font-size: 13px;
-}
-
-/* ═══ 按钮样式 - macOS 风格 ═══ */
-[type="submit"],
-.btn,
-button.rounded-full:not([class*="md-editor"]):not([class*="toolbar"]) {
-    background: var(--mac-blue) !important;
-    border: none !important;
-    color: white !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
-    font-weight: 500;
-    font-size: 13px;
-    border-radius: var(--mac-radius-sm) !important;
-    padding: 6px 14px;
-    transition: all 0.15s ease;
-    box-shadow: none !important;
-}
-
-[type="submit"]:hover,
-.btn:hover {
-    background: #0066D6 !important;
-    transform: none;
-}
-
-[type="submit"]:active,
-.btn:active {
-    background: #0055B3 !important;
-}
-
-/* 次要按钮 */
-button.rounded-full {
-    background: var(--mac-bg-tertiary) !important;
-    color: var(--mac-text) !important;
-}
-
-/* 编辑器工具栏按钮 */
-.md-editor button,
-[class*="toolbar"] button,
-[class*="TheEditor"] button:not([type="submit"]) {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    color: var(--mac-text-secondary) !important;
-    border-radius: var(--mac-radius-sm) !important;
-    padding: 4px 8px !important;
-}
-
-.md-editor button:hover,
-[class*="toolbar"] button:hover {
-    background: var(--mac-bg-tertiary) !important;
-    color: var(--mac-text) !important;
-}
-
-/* ═══ 输入框样式 ═══ */
-input,
-textarea,
-select {
-    background: var(--mac-bg-secondary) !important;
-    border: 1px solid var(--mac-border) !important;
-    color: var(--mac-text) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
-    font-size: 14px;
-    border-radius: var(--mac-radius-sm) !important;
-    padding: 8px 12px;
-    transition: all 0.15s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none !important;
-    border-color: var(--mac-blue) !important;
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25) !important;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: var(--mac-text-tertiary) !important;
-}
-
-/* ═══ 链接样式 ═══ */
-a {
-    color: var(--mac-blue) !important;
-    text-decoration: none;
-    transition: opacity 0.15s ease;
-}
-
-a:hover {
-    text-decoration: underline;
-    text-shadow: none !important;
-}
-
-/* ═══ 图片样式 ═══ */
-.md-editor-preview img,
-[class*="TheImageGallery"] img,
-[class*="gallery"] img {
-    border: none !important;
-    border-radius: var(--mac-radius) !important;
-    box-shadow: var(--mac-shadow) !important;
-}
-
-img.rounded-full {
-    border: none !important;
-    box-shadow: var(--mac-shadow-sm) !important;
-}
-
-/* ═══ 滚动条 - macOS 风格 ═══ */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.35);
-}
-
-html.dark ::-webkit-scrollbar-thumb,
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* ═══ 日期时间 ═══ */
-.text-sm {
-    font-size: 12px;
-    color: var(--mac-text-secondary) !important;
-}
-
-/* ═══ 标签样式 ═══ */
-span[class*="truncate"] {
-    color: var(--mac-blue) !important;
-    background: rgba(0, 122, 255, 0.1) !important;
-    padding: 2px 8px;
-    border-radius: 4px;
-    border: none !important;
-    font-size: 12px;
-}
-
-/* ═══ 图标 ═══ */
-svg {
-    filter: none !important;
-}
-
-/* ═══ 顶部导航栏 - 毛玻璃效果 ═══ */
-nav,
-header,
-[class*="TheTop"] {
-    background: rgba(255, 255, 255, 0.72) !important;
-    border-bottom: 1px solid var(--mac-divider) !important;
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-}
-
-html.dark nav,
-html.dark header,
-html.dark [class*="TheTop"],
-[data-theme="dark"] nav {
-    background: rgba(30, 30, 30, 0.72) !important;
-}
-
-/* 搜索框 - Spotlight 风格 */
-nav input,
-header input {
-    background: var(--mac-bg-tertiary) !important;
-    border: none !important;
-    border-radius: var(--mac-radius-sm) !important;
-    padding: 6px 12px !important;
-    font-size: 13px;
-}
-
-nav input:focus,
-header input:focus {
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25) !important;
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   💻 Xcode 代码块样式
-   ═══════════════════════════════════════════════════════════════ */
-
-/* Markdown 预览 */
-.md-editor,
-.md-editor-preview,
-#preview-only {
-    background: transparent !important;
-    color: var(--mac-text) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif !important;
+    font-size: 15px;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* 行内代码 */
-.md-editor-preview code,
-.md-editor code {
-    background: var(--mac-bg-tertiary) !important;
-    color: var(--xcode-keyword) !important;
-    border: none !important;
-    font-family: 'SF Mono', 'JetBrains Mono', 'Menlo', monospace !important;
-    font-size: 0.875em;
-    padding: 2px 6px;
-    border-radius: 4px;
+body::before, body::after, main::after {
+    display: none !important;
 }
 
-/* 代码块 - Xcode 编辑器风格 */
-.md-editor-preview pre,
-.md-editor pre,
-pre {
-    background: var(--xcode-bg) !important;
-    border: 1px solid var(--mac-border) !important;
-    border-radius: var(--mac-radius) !important;
-    box-shadow: var(--mac-shadow-sm) !important;
-    position: relative;
-    overflow: hidden;
+/* ═══ 顶部导航 - 超级毛玻璃 ═══ */
+nav, header, [class*="TheTop"] {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: saturate(200%) blur(30px) !important;
+    -webkit-backdrop-filter: saturate(200%) blur(30px) !important;
+    border-bottom: 1px solid var(--mac-border-light) !important;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset !important;
 }
 
-/* 代码块内容 */
-.md-editor-preview pre code,
-.md-editor pre code,
-pre code {
-    background: transparent !important;
-    color: var(--mac-text) !important;
-    font-family: 'SF Mono', 'JetBrains Mono', 'Menlo', monospace !important;
-    font-size: 13px;
-    line-height: 1.5;
+html.dark nav, html.dark header, html.dark [class*="TheTop"] {
+    background: rgba(28, 28, 30, 0.7) !important;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset !important;
 }
 
-/* Xcode 语法高亮 */
-pre code .hljs-keyword,
-pre code .token.keyword {
-    color: var(--xcode-keyword) !important;
-    font-weight: 500;
+/* ═══ 搜索框 - Spotlight 风格 ═══ */
+nav input, header input {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid transparent !important;
+    border-radius: 10px !important;
+    padding: 8px 14px !important;
+    font-size: 14px;
+    transition: all 0.25s ease;
 }
 
-pre code .hljs-string,
-pre code .token.string {
-    color: var(--xcode-string) !important;
-}
-
-pre code .hljs-number,
-pre code .token.number {
-    color: var(--xcode-number) !important;
-}
-
-pre code .hljs-comment,
-pre code .token.comment {
-    color: var(--xcode-comment) !important;
-    font-style: italic;
-}
-
-pre code .hljs-function,
-pre code .token.function {
-    color: var(--xcode-function) !important;
-}
-
-pre code .hljs-class,
-pre code .hljs-type,
-pre code .token.class-name {
-    color: var(--xcode-type) !important;
-}
-
-pre code .hljs-variable,
-pre code .token.variable {
-    color: var(--xcode-variable) !important;
-}
-
-/* 代码块头部 - 窗口控制按钮 */
-[class*="code-block"] > div:first-child,
-pre > div:first-child {
-    background: var(--mac-bg-tertiary) !important;
-    border-bottom: 1px solid var(--mac-divider) !important;
-    padding: 8px 12px !important;
+nav input:focus, header input:focus {
+    background: var(--mac-bg-card) !important;
+    border-color: var(--mac-blue) !important;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2), var(--mac-shadow) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   📇 笔记卡片 - macOS 窗口风格
+   📇 笔记卡片 - 简约磨砂玻璃
    ═══════════════════════════════════════════════════════════════ */
 
-/* 卡片容器 */
 .will-change-transform {
-    background: var(--mac-bg-secondary) !important;
-    border: 1px solid var(--mac-border) !important;
-    border-radius: var(--mac-radius-lg) !important;
-    margin-bottom: 12px;
-    padding: 16px;
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 20px !important;
+    margin-bottom: 16px !important;
+    padding: 20px 24px !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.3s ease !important;
     position: relative;
-    box-shadow: var(--mac-shadow) !important;
-    transition: all 0.2s ease;
 }
 
 .will-change-transform:hover {
-    box-shadow: var(--mac-shadow-lg) !important;
+    background: rgba(255, 255, 255, 0.75) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* 移除原有装饰 */
-.will-change-transform::before,
-.will-change-transform::after {
-    display: none !important;
+/* 移除左侧竖条 */
+.will-change-transform > div > .border-l-2,
+.will-change-transform > div > .border-l,
+.border-l-2.border-\[var\(--timeline-line-color\)\] {
+    border-left: none !important;
+    margin-left: 0 !important;
+    padding-left: 16px !important;
 }
 
-/* 时间点 */
-.will-change-transform .w-2.h-2.rounded-full {
-    width: 8px !important;
-    height: 8px !important;
-    background: var(--mac-blue) !important;
-    box-shadow: none !important;
+/* 暗色模式 */
+html.dark .will-change-transform,
+[data-theme="dark"] .will-change-transform {
+    background: rgba(44, 44, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark .will-change-transform:hover,
+[data-theme="dark"] .will-change-transform:hover {
+    background: rgba(58, 58, 60, 0.75) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 时间点改为彩色圆点 */
+.will-change-transform .w-2.h-2.rounded-full,
+.will-change-transform .w-3.h-3.rounded-full {
+    width: 10px !important;
+    height: 10px !important;
+    background: var(--apple-gradient) !important;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4) !important;
     animation: none !important;
+    border: none !important;
 }
 
-/* 日期时间 */
+/* 日期时间标签 */
 .will-change-transform .text-sm.text-nowrap {
     font-size: 12px;
+    font-weight: 500;
     color: var(--mac-text-secondary) !important;
-    background: transparent !important;
-    padding: 0 !important;
+    background: var(--mac-bg-tertiary) !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
     border: none !important;
 }
 
@@ -489,202 +197,653 @@ pre > div:first-child {
     background: var(--mac-bg-tertiary) !important;
     border: none !important;
     box-shadow: none !important;
+    transition: all 0.2s ease;
 }
 
 .will-change-transform .rounded-full.shadow-sm:hover {
-    background: var(--mac-border) !important;
+    background: rgba(0, 0, 0, 0.06) !important;
 }
 
-/* 加载更多按钮 */
+/* 操作条容器 */
+.will-change-transform [class*="flex"][class*="gap"] .rounded-full,
+.will-change-transform .flex.gap-1 > *,
+.will-change-transform .flex.gap-2 > * {
+    background: transparent !important;
+}
+
+/* 悬停操作条 - 更柔和的样式 */
+[class*="bg-"][class*="rounded-full"]:has(svg) {
+    background: var(--mac-bg-tertiary) !important;
+    transition: all 0.2s ease;
+}
+
+[class*="bg-"][class*="rounded-full"]:has(svg):hover {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 操作栏整体 */
+.will-change-transform .absolute,
+.will-change-transform [class*="absolute"] {
+    background: var(--mac-bg-card) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--mac-border) !important;
+    box-shadow: var(--mac-shadow) !important;
+}
+
+/* 操作栏图标 */
+.will-change-transform svg {
+    color: var(--mac-text-secondary) !important;
+    stroke: var(--mac-text-secondary) !important;
+    transition: all 0.2s ease;
+}
+
+.will-change-transform svg:hover {
+    color: var(--mac-text) !important;
+    stroke: var(--mac-text) !important;
+}
+
+/* ═══ 标题 ═══ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    color: var(--mac-text) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+/* 用户名 */
+.font-bold {
+    color: var(--mac-text) !important;
+    font-weight: 600 !important;
+}
+
+/* 次要文字 */
+.text-slate-500, .text-gray-500 {
+    color: var(--mac-text-secondary) !important;
+}
+
+/* ═══ 按钮 - Apple 风格 ═══ */
+[type="submit"], .btn {
+    background: var(--mac-blue) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 14px;
+    border-radius: 12px !important;
+    padding: 10px 20px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3) !important;
+}
+
+[type="submit"]:hover, .btn:hover {
+    background: #0066D6 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4) !important;
+}
+
+[type="submit"]:active, .btn:active {
+    transform: scale(0.97);
+}
+
+/* 次要按钮 */
+button.rounded-full:not([type="submit"]) {
+    background: var(--mac-bg-tertiary) !important;
+    color: var(--mac-text) !important;
+    border: none !important;
+}
+
+/* 编辑器工具栏 */
+.md-editor button, [class*="toolbar"] button {
+    background: transparent !important;
+    border: none !important;
+    color: var(--mac-text-secondary) !important;
+    border-radius: 8px !important;
+}
+
+.md-editor button:hover, [class*="toolbar"] button:hover {
+    background: var(--mac-bg-tertiary) !important;
+    color: var(--mac-blue) !important;
+}
+
+/* ═══ 输入框 ═══ */
+input, textarea, select {
+    background: var(--mac-bg-card) !important;
+    border: 1px solid var(--mac-border) !important;
+    color: var(--mac-text) !important;
+    font-size: 15px;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    transition: all 0.25s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none !important;
+    border-color: var(--mac-blue) !important;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15), var(--mac-shadow) !important;
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--mac-text-tertiary) !important;
+}
+
+/* ═══ 链接 ═══ */
+a {
+    color: var(--mac-blue) !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: var(--mac-indigo) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   💻 代码块 - Xcode 窗口风格
+   ═══════════════════════════════════════════════════════════════ */
+
+.md-editor, .md-editor-preview, #preview-only {
+    background: transparent !important;
+    color: var(--mac-text) !important;
+    line-height: 1.7;
+}
+
+/* 行内代码 */
+.md-editor-preview code:not(.language-bash):not(.language-js):not(.language-javascript):not(.language-go):not(.language-python):not(.language-dart):not(.language-swift):not(.language-java):not(.language-css):not(.language-html):not(.language-json):not(.language-yaml):not(.language-sql):not(.language-shell):not(.language-typescript):not(.language-ts):not([class*="language-"]),
+.md-editor code:not([class*="language-"]) {
+    background: linear-gradient(135deg, rgba(155, 35, 147, 0.1), rgba(0, 122, 255, 0.1)) !important;
+    color: var(--xcode-keyword) !important;
+    border: none !important;
+    font-family: 'SF Mono', 'JetBrains Mono', monospace !important;
+    font-size: 0.9em;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+/* 代码块容器 - 磨砂玻璃 */
+.md-editor-code {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: var(--mac-radius) !important;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
+    overflow: hidden;
+    margin: 16px 0 !important;
+}
+
+html.dark .md-editor-code {
+    background: rgba(44, 44, 46, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset !important;
+}
+
+/* 代码块头部 - macOS 窗口风格 */
+.md-editor-code-head {
+    background: rgba(255, 255, 255, 0.4) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    padding: 10px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+}
+
+html.dark .md-editor-code-head {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 窗口按钮 - 红绿黄 */
+.md-editor-code-flag {
+    display: flex !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    margin-right: auto !important;
+}
+
+.md-editor-code-flag span {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    display: block !important;
+}
+
+.md-editor-code-flag span:nth-child(1) {
+    background: #FF5F57 !important;
+}
+
+.md-editor-code-flag span:nth-child(2) {
+    background: #FEBC2E !important;
+}
+
+.md-editor-code-flag span:nth-child(3) {
+    background: #28C840 !important;
+}
+
+/* 代码块操作区 */
+.md-editor-code-action {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-left: auto !important;
+}
+
+/* 语言标签 */
+.md-editor-code-lang {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--mac-text-secondary) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* 复制按钮 */
+.md-editor-copy-button {
+    font-size: 12px !important;
+    color: var(--mac-text-tertiary) !important;
+    cursor: pointer;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease;
+    background: transparent !important;
+}
+
+.md-editor-copy-button:hover {
+    color: var(--mac-blue) !important;
+    background: rgba(0, 122, 255, 0.1) !important;
+}
+
+/* 折叠按钮 */
+.md-editor-collapse-tips {
+    color: var(--mac-text-tertiary) !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    transition: color 0.2s ease;
+}
+
+.md-editor-collapse-tips:hover {
+    color: var(--mac-blue) !important;
+}
+
+.md-editor-collapse-tips svg {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* 代码块内容 */
+.md-editor-code pre {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 16px !important;
+}
+
+.md-editor-code pre code {
+    background: transparent !important;
+    color: var(--mac-text) !important;
+    font-family: 'SF Mono', 'JetBrains Mono', monospace !important;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Xcode 语法高亮 */
+pre code .hljs-keyword, pre code .token.keyword { color: var(--xcode-keyword) !important; font-weight: 600; }
+pre code .hljs-string, pre code .token.string { color: var(--xcode-string) !important; }
+pre code .hljs-number, pre code .token.number { color: var(--xcode-number) !important; }
+pre code .hljs-comment, pre code .token.comment { color: var(--xcode-comment) !important; font-style: italic; }
+pre code .hljs-function, pre code .token.function { color: var(--xcode-function) !important; }
+
+/* ═══ 图片 ═══ */
+.md-editor-preview img, [class*="gallery"] img {
+    border-radius: var(--mac-radius) !important;
+    box-shadow: var(--mac-shadow-lg) !important;
+    transition: all 0.3s ease;
+}
+
+.md-editor-preview img:hover, [class*="gallery"] img:hover {
+    transform: scale(1.02);
+    box-shadow: var(--mac-shadow-lg), var(--mac-shadow-glow) !important;
+}
+
+img.rounded-full {
+    border: 3px solid var(--mac-bg-card) !important;
+    box-shadow: var(--mac-shadow) !important;
+}
+
+/* ═══ 滚动条 ═══ */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+    background: rgba(0, 0, 0, 0.15); 
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.25); }
+
+html.dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); }
+
+/* ═══ 标签 ═══ */
+span[class*="truncate"] {
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(94, 92, 230, 0.1)) !important;
+    color: var(--mac-blue) !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    border: none !important;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ═══ 加载更多 ═══ */
 .rounded-full.bg-\[var\(--timeline-load-more-bg-color\)\] {
     background: var(--mac-bg-tertiary) !important;
     border: none !important;
     color: var(--mac-text) !important;
-    font-size: 13px;
     font-weight: 500;
-    border-radius: var(--mac-radius-sm) !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease;
 }
 
 .rounded-full.bg-\[var\(--timeline-load-more-bg-color\)\]:hover {
     background: var(--mac-blue) !important;
     color: white !important;
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   🎛️ 其他组件
-   ═══════════════════════════════════════════════════════════════ */
-
-/* 热力图 */
-.w-5.h-5.rounded-\[6px\] {
-    border: none !important;
-    border-radius: 3px !important;
+/* ═══ 悬停操作条 - 磨砂玻璃风格 ═══ */
+.bg-\[var\(--echo-card-btn-bg-color\)\],
+[class*="bg-sky"],
+[class*="bg-blue"],
+.rounded-full[class*="bg-"]:not(.w-2):not(.w-3) {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
 }
 
-/* 编辑器区域 */
-.bg-\[var\(--editor-bg-color\)\] {
-    background: var(--mac-bg-secondary) !important;
-    border: 1px solid var(--mac-border) !important;
+html.dark .bg-\[var\(--echo-card-btn-bg-color\)\],
+html.dark [class*="bg-sky"],
+html.dark [class*="bg-blue"],
+html.dark .rounded-full[class*="bg-"]:not(.w-2):not(.w-3),
+[data-theme="dark"] .bg-\[var\(--echo-card-btn-bg-color\)\] {
+    background: rgba(60, 60, 67, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+}
+
+/* 操作条内的图标颜色 */
+.bg-\[var\(--echo-card-btn-bg-color\)\] svg,
+[class*="bg-sky"] svg,
+[class*="bg-blue"] svg {
+    color: var(--mac-text-secondary) !important;
+    stroke: var(--mac-text-secondary) !important;
+}
+
+/* ═══ 卡片容器 - 磨砂玻璃 ═══ */
+.bg-\[var\(--card-color\)\], .widget, .max-w-sm.shadow {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
     border-radius: var(--mac-radius-lg) !important;
-    box-shadow: var(--mac-shadow) !important;
+    box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset !important;
+}
+
+html.dark .bg-\[var\(--card-color\)\],
+html.dark .widget,
+html.dark .max-w-sm.shadow {
+    background: rgba(44, 44, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+}
+
+.bg-\[var\(--card-color\)\]::before, .widget::before {
+    display: none !important;
+}
+
+/* ═══ 编辑器 - 磨砂玻璃 ═══ */
+.bg-\[var\(--editor-bg-color\)\] {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: var(--mac-radius-lg) !important;
+    box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset !important;
+}
+
+html.dark .bg-\[var\(--editor-bg-color\)\] {
+    background: rgba(44, 44, 46, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .bg-\[var\(--editor-bg-color\)\]::before {
     display: none !important;
 }
 
-/* 通知 */
-[data-sonner-toast] {
-    background: var(--mac-bg-secondary) !important;
-    border: 1px solid var(--mac-border) !important;
-    color: var(--mac-text) !important;
-    border-radius: var(--mac-radius) !important;
-    box-shadow: var(--mac-shadow-lg) !important;
-}
-
-/* 对话框 - macOS 弹窗风格 */
-[role="dialog"],
-.dialog,
-.modal {
-    background: var(--mac-bg-secondary) !important;
+/* ═══ 热力图 ═══ */
+.w-5.h-5.rounded-\[6px\] {
+    border-radius: 4px !important;
     border: none !important;
-    border-radius: var(--mac-radius-xl) !important;
-    box-shadow: var(--mac-shadow-window) !important;
 }
 
-/* 分割线 */
-hr {
-    border: none;
-    height: 1px;
-    background: var(--mac-divider);
-    margin: 16px 0;
+/* ═══ 对话框 - 磨砂玻璃 ═══ */
+
+/* 对话框遮罩层 */
+.fixed.inset-0.bg-black\/30,
+[class*="bg-black"] {
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* 引用块 */
+/* 对话框容器 */
+[role="dialog"], 
+.dialog, 
+.modal {
+    z-index: 10000 !important;
+}
+
+/* 对话框面板 */
+[id*="headlessui-dialog-panel"],
+.bg-\[var\(--dialog-bg-color\)\] {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(40px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: 16px !important;
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset !important;
+    color: var(--mac-text) !important;
+    position: relative !important;
+    z-index: 10001 !important;
+}
+
+html.dark [id*="headlessui-dialog-panel"],
+html.dark .bg-\[var\(--dialog-bg-color\)\] {
+    background: rgba(44, 44, 46, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset !important;
+}
+
+/* 对话框标题 */
+[id*="headlessui-dialog-title"],
+.text-\[var\(--dialog-title-color\)\] {
+    color: var(--mac-text) !important;
+}
+
+/* 对话框文本 */
+[id*="headlessui-description"],
+.text-\[var\(--dialog-text-color\)\] {
+    color: var(--mac-text-secondary) !important;
+}
+
+/* 对话框按钮 */
+.bg-\[var\(--dialog-cancel-btn-bg-color\)\] {
+    background: var(--mac-bg-tertiary) !important;
+    color: var(--mac-text) !important;
+    border: 1px solid var(--mac-border) !important;
+}
+
+.bg-\[var\(--dialog-cancel-btn-bg-color\)\]:hover {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+.bg-\[var\(--dialog-confirm-btn-bg-color\)\] {
+    background: var(--mac-red) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.bg-\[var\(--dialog-confirm-btn-bg-color\)\]:hover {
+    background: #E02020 !important;
+}
+
+/* ═══ 通知 - 磨砂玻璃 ═══ */
+[data-sonner-toast] {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: var(--mac-radius) !important;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset !important;
+}
+
+html.dark [data-sonner-toast] {
+    background: rgba(44, 44, 46, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ═══ 引用块 ═══ */
 blockquote {
-    border-left: 3px solid var(--mac-blue) !important;
-    background: rgba(0, 122, 255, 0.06) !important;
-    padding: 12px 16px;
-    margin: 12px 0;
-    border-radius: 0 var(--mac-radius-sm) var(--mac-radius-sm) 0;
-    color: var(--mac-text);
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.08), rgba(94, 92, 230, 0.08)) !important;
+    border-left: 4px solid var(--mac-blue) !important;
+    border-radius: 0 var(--mac-radius) var(--mac-radius) 0 !important;
+    padding: 16px 20px !important;
+    margin: 16px 0 !important;
 }
 
-/* 表格 */
+/* ═══ 表格 ═══ */
 table {
-    border-collapse: collapse;
-    width: 100%;
-    background: var(--mac-bg-secondary);
+    background: var(--mac-bg-card);
     border-radius: var(--mac-radius);
     overflow: hidden;
     border: 1px solid var(--mac-border);
+    box-shadow: var(--mac-shadow);
 }
 
 th {
     background: var(--mac-bg-tertiary) !important;
-    color: var(--mac-text) !important;
     font-weight: 600;
-    padding: 10px 14px;
-    text-align: left;
+    padding: 14px 18px;
     font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
+    color: var(--mac-text-secondary) !important;
 }
 
 td {
-    padding: 10px 14px;
-    border-top: 1px solid var(--mac-divider);
+    padding: 14px 18px;
+    border-top: 1px solid var(--mac-border);
 }
 
 tr:hover td {
-    background: var(--mac-bg-tertiary);
+    background: rgba(0, 122, 255, 0.04);
 }
 
-/* 选中文字 */
+/* ═══ 分割线 ═══ */
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mac-border), transparent);
+    margin: 24px 0;
+}
+
+/* ═══ 选中文字 ═══ */
 ::selection {
-    background: rgba(0, 122, 255, 0.3);
-    color: inherit;
+    background: rgba(0, 122, 255, 0.25);
 }
 
-/* 加载动画 */
-#app-loader {
-    background: var(--mac-bg) !important;
-}
+/* ═══ 加载器 ═══ */
+#app-loader { background: var(--mac-bg-solid) !important; }
+.loader::before { border-top-color: var(--mac-blue) !important; }
 
-.loader::before {
-    border-top-color: var(--mac-blue) !important;
-}
+/* ═══ 验证徽章 ═══ */
+.text-sky-500 { color: var(--mac-blue) !important; }
 
-/* 验证徽章 */
-.text-sky-500 {
-    color: var(--mac-blue) !important;
-}
-
-/* 连接头像 */
-.flex-wrap > div.rounded-full,
-.flex-wrap .border-2 {
-    border-color: var(--mac-border) !important;
-    box-shadow: none !important;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   💬 Twikoo 评论区
-   ═══════════════════════════════════════════════════════════════ */
-
-.tk-comments,
-.tk-submit-wrapper,
-#twikoo {
-    background: transparent !important;
-}
+/* ═══ Twikoo 评论 ═══ */
+.tk-comments, .tk-submit-wrapper, #twikoo { background: transparent !important; }
 
 .tk-meta-input .el-input-group__prepend {
     background: var(--mac-bg-tertiary) !important;
     border: 1px solid var(--mac-border) !important;
     border-right: none !important;
-    color: var(--mac-text-secondary) !important;
-    font-size: 12px;
-    border-radius: 6px 0 0 6px !important;
+    border-radius: 10px 0 0 10px !important;
 }
 
 .tk-meta-input .el-input__inner {
-    background: var(--mac-bg-secondary) !important;
+    background: var(--mac-bg-card) !important;
     border: 1px solid var(--mac-border) !important;
-    color: var(--mac-text) !important;
-    border-radius: 0 6px 6px 0 !important;
+    border-radius: 0 10px 10px 0 !important;
 }
 
 .tk-input .el-textarea__inner {
-    background: var(--mac-bg-secondary) !important;
+    background: var(--mac-bg-card) !important;
     border: 1px solid var(--mac-border) !important;
-    border-radius: 6px !important;
+    border-radius: 12px !important;
 }
 
 .tk-submit .el-button--primary {
     background: var(--mac-blue) !important;
     border: none !important;
-    border-radius: 6px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   📱 移动端响应式
-   ═══════════════════════════════════════════════════════════════ */
-
+/* ═══ 移动端 ═══ */
 @media (max-width: 768px) {
     main, .container, [class*="container"] {
-        padding-left: 8px !important;
-        padding-right: 8px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
     }
     
-    .will-change-transform,
-    .bg-\[var\(--card-color\)\],
-    .widget {
+    .will-change-transform, .bg-\[var\(--card-color\)\], .widget {
         margin-left: 0 !important;
         margin-right: 0 !important;
-        padding: 14px !important;
-        border-radius: 12px !important;
+        padding: 16px !important;
+        border-radius: 16px !important;
     }
     
-    pre {
-        font-size: 12px !important;
-        border-radius: 8px !important;
+    .will-change-transform:hover {
+        transform: none !important;
     }
+    
+    pre { border-radius: 12px !important; }
 }

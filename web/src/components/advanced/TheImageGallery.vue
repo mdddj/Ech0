@@ -199,7 +199,8 @@ onBeforeUnmount(() => {})
 }
 
 .imgwidth {
-  width: 88%;
+  width: 95%;
+  max-width: 1400px;
 }
 
 .echoimg {

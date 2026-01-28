@@ -878,6 +878,7 @@ func (settingService *SettingService) GetAgentInfo(setting *model.AgentSetting) 
 			setting.ApiKey = ""
 			setting.Prompt = ""
 			setting.BaseURL = ""
+			setting.StreamEnable = false
 
 			// 序列化为 JSON
 			settingToJSON, err := jsonUtil.JSONMarshal(setting)
@@ -924,6 +925,7 @@ func (settingService *SettingService) GetAgentSettings(
 			setting.ApiKey = ""
 			setting.Prompt = ""
 			setting.BaseURL = ""
+			setting.StreamEnable = false
 
 			// 序列化为 JSON
 			settingToJSON, err := jsonUtil.JSONMarshal(setting)
@@ -970,12 +972,13 @@ func (settingService *SettingService) UpdateAgentSettings(
 	}
 
 	setting := &model.AgentSetting{
-		Enable:   newSetting.Enable,
-		Provider: newSetting.Provider,
-		Model:    newSetting.Model,
-		ApiKey:   newSetting.ApiKey,
-		Prompt:   newSetting.Prompt,
-		BaseURL:  httpUtil.TrimURL(newSetting.BaseURL),
+		Enable:       newSetting.Enable,
+		Provider:     newSetting.Provider,
+		Model:        newSetting.Model,
+		ApiKey:       newSetting.ApiKey,
+		Prompt:       newSetting.Prompt,
+		BaseURL:      httpUtil.TrimURL(newSetting.BaseURL),
+		StreamEnable: newSetting.StreamEnable,
 	}
 
 	return settingService.txManager.Run(func(ctx context.Context) error {

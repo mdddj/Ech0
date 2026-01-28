@@ -90,6 +90,12 @@
         />
       </div>
 
+      <!-- 流式输出 -->
+      <div class="flex flex-row items-center justify-start text-[var(--text-color-next-500)] h-10">
+        <h2 class="font-semibold w-24 shrink-0">流式输出:</h2>
+        <BaseSwitch v-model="AgentSetting.stream_enable" :disabled="!agentEditMode" />
+      </div>
+
       <!-- Prompt -->
       <div class="flex justify-start text-[var(--text-color-next-500)] gap-2 mt-2">
         <h2 class="font-semibold w-24 shrink-0">Prompt:</h2>

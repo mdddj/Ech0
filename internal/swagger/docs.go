@@ -2213,6 +2213,10 @@ const docTemplate = `{
                 "provider": {
                     "description": "LLM 提供商 （OpenAI、DeepSeek、Anthropic、Gemini、阿里百炼、Ollama等）",
                     "type": "string"
+                },
+                "stream_enable": {
+                    "description": "是否启用流式输出",
+                    "type": "boolean"
                 }
             }
         },
@@ -2242,6 +2246,10 @@ const docTemplate = `{
                 "provider": {
                     "description": "LLM 提供商 （OpenAI、DeepSeek、Anthropic、Gemini、阿里百炼、Ollama等）",
                     "type": "string"
+                },
+                "stream_enable": {
+                    "description": "是否启用流式输出",
+                    "type": "boolean"
                 }
             }
         },

@@ -3,6 +3,8 @@ package agent
 import (
 	"context"
 	"errors"
+	"io"
+	"strings"
 
 	"github.com/cloudwego/eino-ext/components/model/claude"
 	"github.com/cloudwego/eino-ext/components/model/deepseek"
@@ -76,6 +78,28 @@ func Generate(
 			return "", err
 		}
 
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
+		}
+
 		resp, genErr = cm.Generate(ctx, in)
 
 	case string(commonModel.Anthropic):
@@ -92,6 +116,28 @@ func Generate(
 		})
 		if err != nil {
 			return "", err
+		}
+
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
 		}
 
 		resp, genErr = cm.Generate(ctx, in)
@@ -111,6 +157,28 @@ func Generate(
 			return "", err
 		}
 
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
+		}
+
 		resp, genErr = cm.Generate(ctx, in)
 
 	case string(commonModel.Qwen):
@@ -122,6 +190,28 @@ func Generate(
 		})
 		if err != nil {
 			return "", err
+		}
+
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
 		}
 
 		resp, genErr = cm.Generate(ctx, in)
@@ -142,6 +232,28 @@ func Generate(
 			return "", err
 		}
 
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
+		}
+
 		resp, genErr = cm.Generate(ctx, in)
 
 	case string(commonModel.Ollama):
@@ -151,6 +263,28 @@ func Generate(
 		})
 		if err != nil {
 			return "", err
+		}
+
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
 		}
 
 		resp, genErr = cm.Generate(ctx, in)
@@ -164,6 +298,28 @@ func Generate(
 		})
 		if err != nil {
 			return "", err
+		}
+
+		if setting.StreamEnable {
+			stream, err := cm.Stream(ctx, in)
+			if err != nil {
+				return "", err
+			}
+			defer stream.Close()
+
+			var builder strings.Builder
+			for {
+				chunk, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					return "", err
+				}
+				builder.WriteString(chunk.Content)
+			}
+
+			return builder.String(), nil
 		}
 
 		resp, genErr = cm.Generate(ctx, in)
