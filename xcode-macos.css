@@ -221,15 +221,6 @@ html.dark .will-change-transform:hover,
     background: rgba(0, 0, 0, 0.08) !important;
 }
 
-/* 操作栏整体 */
-.will-change-transform .absolute,
-.will-change-transform [class*="absolute"] {
-    background: var(--mac-bg-card) !important;
-    backdrop-filter: blur(12px) !important;
-    border: 1px solid var(--mac-border) !important;
-    box-shadow: var(--mac-shadow) !important;
-}
-
 /* 操作栏图标 */
 .will-change-transform svg {
     color: var(--mac-text-secondary) !important;

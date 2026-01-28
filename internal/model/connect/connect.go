@@ -15,3 +15,11 @@ type Connected struct {
 	ID         uint   `gorm:"primaryKey" json:"id"`
 	ConnectURL string `                  json:"connect_url"` // 连接地址
 }
+
+// ConnectHealth 定义连接健康状态
+type ConnectHealth struct {
+	ID         uint   `json:"id"`
+	ConnectURL string `json:"connect_url"`
+	IsHealthy  bool   `json:"is_healthy"`
+	Message    string `json:"message"`
+}

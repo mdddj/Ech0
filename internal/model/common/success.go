@@ -92,11 +92,12 @@ const (
 
 // Connect 成功相关常量
 const (
-	CONNECT_SUCCESS            = "连接成功"
-	ADD_CONNECT_SUCCESS        = "添加连接成功"
-	DELETE_CONNECT_SUCCESS     = "连接已取消"
-	GET_CONNECT_INFO_SUCCESS   = "获取 Connect 信息成功"
-	GET_CONNECTED_LIST_SUCCESS = "获取连接列表成功"
+	CONNECT_SUCCESS                = "连接成功"
+	ADD_CONNECT_SUCCESS            = "添加连接成功"
+	DELETE_CONNECT_SUCCESS         = "连接已取消"
+	GET_CONNECT_INFO_SUCCESS       = "获取 Connect 信息成功"
+	GET_CONNECTED_LIST_SUCCESS     = "获取连接列表成功"
+	CLEAN_INVALID_CONNECTS_SUCCESS = "清理失效连接成功"
 )
 
 // Backup 成功相关常量

@@ -43,3 +43,19 @@ export function fetchDeleteConnect(id: number) {
     method: 'DELETE',
   })
 }
+
+// 检测连接健康状态
+export function fetchCheckConnectsHealth() {
+  return request<App.Api.Connect.ConnectHealth[]>({
+    url: '/connects/health',
+    method: 'GET',
+  })
+}
+
+// 清理失效连接
+export function fetchCleanInvalidConnects() {
+  return request<{ deleted_count: number }>({
+    url: '/connects/clean',
+    method: 'DELETE',
+  })
+}

@@ -12,4 +12,6 @@ func setupConnectRoutes(appRouterGroup *AppRouterGroup, h *di.Handlers) {
 	// Auth
 	appRouterGroup.AuthRouterGroup.POST("/addConnect", h.ConnectHandler.AddConnect())
 	appRouterGroup.AuthRouterGroup.DELETE("/delConnect/:id", h.ConnectHandler.DeleteConnect())
+	appRouterGroup.AuthRouterGroup.GET("/connects/health", h.ConnectHandler.CheckConnectsHealth())
+	appRouterGroup.AuthRouterGroup.DELETE("/connects/clean", h.ConnectHandler.CleanInvalidConnects())
 }

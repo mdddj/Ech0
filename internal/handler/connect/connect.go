@@ -175,3 +175,59 @@ func (connectHandler *ConnectHandler) GetConnects() gin.HandlerFunc {
 		}
 	})
 }
+
+// CheckConnectsHealth 检测所有连接的健康状态
+//
+//	@Summary		检测连接健康状态
+//	@Description	检测所有已添加连接的健康状态
+//	@Tags			连接管理
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	res.Response{data=[]model.ConnectHealth}	"检测成功"
+//	@Failure		200	{object}	res.Response								"检测失败"
+//	@Router			/connects/health [get]
+func (connectHandler *ConnectHandler) CheckConnectsHealth() gin.HandlerFunc {
+	return res.Execute(func(ctx *gin.Context) res.Response {
+		healthResults, err := connectHandler.connectService.CheckConnectsHealth()
+		if err != nil {
+			return res.Response{
+				Msg: "",
+				Err: err,
+			}
+		}
+
+		return res.Response{
+			Data: healthResults,
+			Msg:  "检测完成",
+		}
+	})
+}
+
+// CleanInvalidConnects 清理失效的连接
+//
+//	@Summary		清理失效连接
+//	@Description	批量删除所有无法访问的连接
+//	@Tags			连接管理
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	res.Response	"清理成功"
+//	@Failure		200	{object}	res.Response	"清理失败"
+//	@Router			/connects/clean [delete]
+func (connectHandler *ConnectHandler) CleanInvalidConnects() gin.HandlerFunc {
+	return res.Execute(func(ctx *gin.Context) res.Response {
+		userId := ctx.MustGet("userid").(uint)
+
+		deletedCount, err := connectHandler.connectService.CleanInvalidConnects(userId)
+		if err != nil {
+			return res.Response{
+				Msg: "",
+				Err: err,
+			}
+		}
+
+		return res.Response{
+			Data: map[string]int{"deleted_count": deletedCount},
+			Msg:  commonModel.CLEAN_INVALID_CONNECTS_SUCCESS,
+		}
+	})
+}

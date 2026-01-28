@@ -4,7 +4,28 @@
     <div class="w-full">
       <div class="flex flex-row items-center justify-between mb-3">
         <h1 class="text-[var(--text-color-600)] font-bold text-lg">Ech0 Connect</h1>
-        <div class="flex flex-row items-center justify-end gap-2 w-14">
+        <div class="flex flex-row items-center justify-end gap-2">
+          <!-- 检测健康状态按钮 -->
+          <button
+            v-if="!connectsEdit && connects.length > 0"
+            @click="handleCheckHealth"
+            :disabled="isChecking"
+            class="px-3 py-1 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            title="检测连接状态"
+          >
+            {{ isChecking ? '检测中...' : '检测状态' }}
+          </button>
+          <!-- 清理失效连接按钮 -->
+          <button
+            v-if="!connectsEdit && connects.length > 0 && hasInvalidConnects"
+            @click="handleCleanInvalid"
+            :disabled="isCleaning"
+            class="px-3 py-1 text-sm rounded-md bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            title="清理失效连接"
+          >
+            {{ isCleaning ? '清理中...' : '清理失效' }}
+          </button>
+          <!-- 编辑按钮 -->
           <button @click="connectsEdit = !connectsEdit" title="编辑">
             <Edit
               v-if="!connectsEdit"
@@ -54,6 +75,11 @@
                   Connect 地址
                 </th>
                 <th
+                  class="px-3 py-2 text-left text-sm font-semibold text-[var(--text-color-next-600)]"
+                >
+                  状态
+                </th>
+                <th
                   class="px-3 min-w-18 py-2 text-right text-sm font-semibold text-[var(--text-color-next-600)]"
                 >
                   操作
@@ -68,6 +94,21 @@
                   :title="connect.connect_url"
                 >
                   {{ connect.connect_url }}
+                </td>
+                <td class="px-3 py-2 text-sm">
+                  <span
+                    v-if="healthStatus[connect.id]"
+                    :class="[
+                      'px-2 py-1 rounded text-xs font-medium',
+                      healthStatus[connect.id].is_healthy
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700',
+                    ]"
+                    :title="healthStatus[connect.id].message"
+                  >
+                    {{ healthStatus[connect.id].is_healthy ? '✓ 正常' : '✗ 失效' }}
+                  </span>
+                  <span v-else class="text-gray-400 text-xs">未检测</span>
                 </td>
                 <td class="px-3 py-2 text-right">
                   <button
@@ -95,8 +136,13 @@ import Edit from '@/components/icons/edit.vue'
 import Disconnect from '@/components/icons/disconnect.vue'
 import Close from '@/components/icons/close.vue'
 import Publish from '@/components/icons/publish.vue'
-import { ref, onMounted } from 'vue'
-import { fetchAddConnect, fetchDeleteConnect } from '@/service/api'
+import { ref, onMounted, computed } from 'vue'
+import {
+  fetchAddConnect,
+  fetchDeleteConnect,
+  fetchCheckConnectsHealth,
+  fetchCleanInvalidConnects,
+} from '@/service/api'
 import { theToast } from '@/utils/toast'
 
 import { useConnectStore } from '@/stores'
@@ -111,6 +157,16 @@ const { connects } = storeToRefs(connectStore)
 const connectsEdit = ref<boolean>(false)
 const connectUrl = ref<string>('')
 
+// 健康检测相关状态
+const isChecking = ref<boolean>(false)
+const isCleaning = ref<boolean>(false)
+const healthStatus = ref<Record<number, App.Api.Connect.ConnectHealth>>({})
+
+// 计算是否有失效连接
+const hasInvalidConnects = computed(() => {
+  return Object.values(healthStatus.value).some((status) => !status.is_healthy)
+})
+
 const handleAddConnect = async () => {
   if (connectUrl.value.length === 0) {
     theToast.error('请输入Connect地址')
@@ -121,6 +177,8 @@ const handleAddConnect = async () => {
       theToast.success(res.msg)
       connectUrl.value = ''
       getConnect()
+      // 清空健康状态
+      healthStatus.value = {}
     }
   })
 }
@@ -135,8 +193,66 @@ const handleDisconnect = async (connect_id: number) => {
         if (res.code === 1) {
           theToast.success(res.msg)
           getConnect()
+          // 清除该连接的健康状态
+          delete healthStatus.value[connect_id]
         }
       })
+    },
+  })
+}
+
+// 检测连接健康状态
+const handleCheckHealth = async () => {
+  if (isChecking.value) return
+
+  isChecking.value = true
+  try {
+    const res = await fetchCheckConnectsHealth()
+    if (res.code === 1 && res.data) {
+      // 将数组转换为以 ID 为键的对象
+      healthStatus.value = {}
+      res.data.forEach((health) => {
+        healthStatus.value[health.id] = health
+      })
+      theToast.success('检测完成')
+    } else {
+      theToast.error(res.msg || '检测失败')
+    }
+  } catch (error) {
+    console.error('检测连接健康状态失败:', error)
+    theToast.error('检测失败，请稍后重试')
+  } finally {
+    isChecking.value = false
+  }
+}
+
+// 清理失效连接
+const handleCleanInvalid = async () => {
+  if (isCleaning.value) return
+
+  openConfirm({
+    title: '确定要清理所有失效连接吗？',
+    description: '此操作将删除所有无法访问的连接，且无法恢复。',
+    onConfirm: async () => {
+      isCleaning.value = true
+      try {
+        const res = await fetchCleanInvalidConnects()
+        if (res.code === 1) {
+          const deletedCount = res.data?.deleted_count || 0
+          theToast.success(`已清理 ${deletedCount} 个失效连接`)
+          // 刷新连接列表
+          await getConnect()
+          // 清空健康状态
+          healthStatus.value = {}
+        } else {
+          theToast.error(res.msg || '清理失败')
+        }
+      } catch (error) {
+        console.error('清理失效连接失败:', error)
+        theToast.error('清理失败，请稍后重试')
+      } finally {
+        isCleaning.value = false
+      }
     },
   })
 }

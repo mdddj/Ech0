@@ -147,17 +147,39 @@ const agentProviderOptions = ref<{ label: string; value: AgentProvider }[]>([
 ])
 
 const handleUpdateAgentSetting = async () => {
-  await fetchUpdateAgentSettings(settingStore.AgentSetting)
-    .then((res) => {
-      if (res.code === 1) {
-        theToast.success(res.msg)
-      }
-    })
-    .finally(() => {
+  // 使用响应式的 AgentSetting.value
+  const settingToSave = {
+    enable: AgentSetting.value.enable,
+    provider: AgentSetting.value.provider,
+    model: AgentSetting.value.model,
+    api_key: AgentSetting.value.api_key,
+    prompt: AgentSetting.value.prompt,
+    base_url: AgentSetting.value.base_url,
+    stream_enable: AgentSetting.value.stream_enable,
+  }
+
+  console.log('准备保存 Agent 设置:', settingToSave)
+
+  try {
+    const res = await fetchUpdateAgentSettings(settingToSave)
+    console.log('保存响应:', res)
+    
+    if (res.code === 1) {
+      theToast.success(res.msg)
       agentEditMode.value = false
-      // 重新获取 Agent 设置
-      getAgentSetting()
-    })
+      // 等待一小段时间后再重新获取，确保后端已保存
+      setTimeout(async () => {
+        console.log('重新获取 Agent 设置...')
+        await getAgentSetting()
+        console.log('获取到的设置:', AgentSetting.value)
+      }, 100)
+    } else {
+      theToast.error(res.msg || '保存失败')
+    }
+  } catch (error) {
+    console.error('保存 Agent 设置失败:', error)
+    theToast.error('保存失败，请重试')
+  }
 }
 
 onMounted(() => {

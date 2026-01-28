@@ -989,7 +989,8 @@ func (settingService *SettingService) UpdateAgentSettings(
 		}
 		settingToJSONString := string(settingToJSON)
 
-		if err := settingService.keyvalueRepository.UpdateKeyValue(ctx, commonModel.AgentSettingKey, settingToJSONString); err != nil {
+		// 使用 AddOrUpdateKeyValue 确保键不存在时也能创建
+		if err := settingService.keyvalueRepository.AddOrUpdateKeyValue(ctx, commonModel.AgentSettingKey, settingToJSONString); err != nil {
 			return err
 		}
 

@@ -351,6 +351,13 @@ declare namespace App {
         id: number
         connect_url: string
       }
+
+      type ConnectHealth = {
+        id: number
+        connect_url: string
+        is_healthy: boolean
+        message: string
+      }
     }
 
     namespace Fediverse {

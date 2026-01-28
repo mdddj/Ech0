@@ -385,3 +385,112 @@ func (connectService *ConnectService) GetConnects() ([]model.Connected, error) {
 	// 返回查询到的 connects
 	return connects, nil
 }
+
+// CheckConnectsHealth 检测所有连接的健康状态
+func (connectService *ConnectService) CheckConnectsHealth() ([]model.ConnectHealth, error) {
+	// 获取所有连接
+	connects, err := connectService.connectRepository.GetAllConnects()
+	if err != nil {
+		return nil, err
+	}
+
+	if len(connects) == 0 {
+		return []model.ConnectHealth{}, nil
+	}
+
+	// 并发检测所有连接
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var wg sync.WaitGroup
+	healthResults := make([]model.ConnectHealth, len(connects))
+
+	for i, conn := range connects {
+		wg.Add(1)
+		go func(index int, connection model.Connected) {
+			defer wg.Done()
+
+			health := model.ConnectHealth{
+				ID:         connection.ID,
+				ConnectURL: connection.ConnectURL,
+				IsHealthy:  false,
+				Message:    "连接失败",
+			}
+
+			// 检测连接
+			url := httpUtil.TrimURL(connection.ConnectURL) + "/api/connect"
+			resp, err := httpUtil.GetWithContext(ctx, url)
+			if err != nil {
+				health.Message = fmt.Sprintf("请求失败: %v", err)
+				healthResults[index] = health
+				return
+			}
+
+			// 尝试解析响应
+			var connectInfo commonModel.Result[model.Connect]
+			if err := json.Unmarshal(resp, &connectInfo); err != nil {
+				health.Message = "响应格式错误"
+				healthResults[index] = health
+				return
+			}
+
+			// 验证响应数据
+			if connectInfo.Code != 1 {
+				health.Message = fmt.Sprintf("响应码无效: %d", connectInfo.Code)
+				healthResults[index] = health
+				return
+			}
+
+			// 连接正常
+			health.IsHealthy = true
+			health.Message = fmt.Sprintf("连接正常 - %s", connectInfo.Data.ServerName)
+			healthResults[index] = health
+		}(i, conn)
+	}
+
+	wg.Wait()
+	return healthResults, nil
+}
+
+// CleanInvalidConnects 清理失效的连接
+func (connectService *ConnectService) CleanInvalidConnects(userid uint) (int, error) {
+	// 检查用户权限
+	user, err := connectService.commonService.CommonGetUserByUserId(userid)
+	if err != nil {
+		return 0, err
+	}
+	if !user.IsAdmin {
+		return 0, errors.New(commonModel.NO_PERMISSION_DENIED)
+	}
+
+	// 先检测所有连接的健康状态
+	healthResults, err := connectService.CheckConnectsHealth()
+	if err != nil {
+		return 0, err
+	}
+
+	// 收集失效的连接 ID
+	var invalidIDs []uint
+	for _, health := range healthResults {
+		if !health.IsHealthy {
+			invalidIDs = append(invalidIDs, health.ID)
+		}
+	}
+
+	if len(invalidIDs) == 0 {
+		return 0, nil
+	}
+
+	// 批量删除失效连接
+	deletedCount := 0
+	for _, id := range invalidIDs {
+		err := connectService.DeleteConnect(userid, id)
+		if err != nil {
+			logUtil.Logger.Error("删除失效连接失败", zap.Uint("id", id), zap.Error(err))
+			continue
+		}
+		deletedCount++
+	}
+
+	return deletedCount, nil
+}

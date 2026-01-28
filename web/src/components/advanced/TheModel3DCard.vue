@@ -1,23 +1,11 @@
 <template>
   <div class="model-viewer-container rounded-lg overflow-hidden relative">
-    <!-- 右上角标签和下载按钮 -->
-    <div class="absolute top-2 right-2 z-10 flex items-center gap-2">
+    <!-- 右上角标签 -->
+    <div class="absolute top-2 right-2 z-10 border-0">
       <!-- 模型类型标签 -->
-      <span class="px-2 py-1 text-xs font-medium rounded bg-black/50 text-white backdrop-blur-sm">
+      <span class="model-type-badge">
         {{ modelType }}
       </span>
-      <!-- 下载按钮 -->
-      <button
-        @click="handleDownload"
-        class="p-1.5 rounded bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors"
-        title="下载模型"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="7 10 12 15 17 10" />
-          <line x1="12" y1="15" x2="12" y2="3" />
-        </svg>
-      </button>
     </div>
     
     <model-viewer
@@ -65,19 +53,6 @@ const modelType = computed(() => {
   if (src.endsWith('.gltf')) return 'GLTF'
   return '3D'
 })
-
-// 下载模型
-const handleDownload = () => {
-  const link = document.createElement('a')
-  link.href = modelUrl.value
-  // 从URL中提取文件名
-  const fileName = props.modelSrc.split('/').pop() || `model.${modelType.value.toLowerCase()}`
-  link.download = fileName
-  link.target = '_blank'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-}
 </script>
 
 <style scoped>
@@ -88,5 +63,18 @@ model-viewer {
 
 .model-viewer-container {
   background-color: transparent;
+}
+
+/* 模型类型标签 - 使用更高优先级 */
+.model-viewer-container .model-type-badge {
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4) !important;
+  display: inline-block !important;
+  line-height: 1.2 !important;
 }
 </style>

@@ -17,4 +17,10 @@ type ConnectServiceInterface interface {
 
 	// GetConnects 获取实例添加的所有连接
 	GetConnects() ([]model.Connected, error)
+
+	// CheckConnectsHealth 检测所有连接的健康状态
+	CheckConnectsHealth() ([]model.ConnectHealth, error)
+
+	// CleanInvalidConnects 清理失效的连接
+	CleanInvalidConnects(userid uint) (int, error)
 }
