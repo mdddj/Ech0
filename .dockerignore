@@ -10,3 +10,11 @@ node_modules/
 web/dist/
 
 web/node_modules
+
+# 忽略本地编译的二进制文件和目录
+ech0
+ech0/
+*.exe
+dist/
+backend-artifacts/
+frontend-asset/

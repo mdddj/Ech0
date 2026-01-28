@@ -38,31 +38,35 @@ COPY --from=frontend-builder /template/dist /app/template/dist
 ARG TARGETOS
 ARG TARGETARCH
 
-# 构建后端二进制文件 - 使用静态链接
-RUN CGO_ENABLED=1 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build \
-    -tags netgo \
-    -ldflags="-linkmode external -extldflags '-static' -w -s" \
+# 构建后端二进制文件
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build \
+    -ldflags="-w -s" \
     -o ech0 ./main.go
 
 # =================== 最终镜像 ===================
 FROM alpine:latest
 
-WORKDIR /app
 ENV TZ=Asia/Shanghai
 
-# 创建必要的目录
-RUN mkdir -p /app/data /app/backup /app/template
+# 创建必要的目录（不包括 /app，避免冲突）
+RUN mkdir -p /data /backup /template
 
-# 从后端构建阶段复制二进制文件
-COPY --from=backend-builder /app/ech0 /app/ech0
+# 从后端构建阶段复制二进制文件到 /usr/local/bin
+COPY --from=backend-builder /app/ech0 /usr/local/bin/ech0
 
 # 设置权限
-RUN chmod +x /app/ech0
+RUN chmod +x /usr/local/bin/ech0
+
+# 设置工作目录
+WORKDIR /app
+
+# 创建 /app 下的目录
+RUN mkdir -p /app/data /app/backup /app/template
 
 # 暴露端口
 EXPOSE 6277
 EXPOSE 6278
 
 # 启动命令
-ENTRYPOINT ["/app/ech0"]
+ENTRYPOINT ["/usr/local/bin/ech0"]
 CMD ["serve"]
