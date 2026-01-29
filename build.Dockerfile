@@ -48,25 +48,22 @@ FROM alpine:latest
 
 ENV TZ=Asia/Shanghai
 
-# 创建必要的目录（不包括 /app，避免冲突）
-RUN mkdir -p /data /backup /template
+# 从后端构建阶段复制二进制文件到临时位置
+COPY --from=backend-builder /app/ech0 /tmp/ech0
 
-# 从后端构建阶段复制二进制文件到 /usr/local/bin
-COPY --from=backend-builder /app/ech0 /usr/local/bin/ech0
+# 创建必要的目录
+RUN mkdir -p /app/data /app/backup /app/template
 
-# 设置权限
-RUN chmod +x /usr/local/bin/ech0
+# 移动二进制文件到 /app
+RUN mv /tmp/ech0 /app/ech0 && chmod +x /app/ech0
 
 # 设置工作目录
 WORKDIR /app
-
-# 创建 /app 下的目录
-RUN mkdir -p /app/data /app/backup /app/template
 
 # 暴露端口
 EXPOSE 6277
 EXPOSE 6278
 
 # 启动命令
-ENTRYPOINT ["/usr/local/bin/ech0"]
+ENTRYPOINT ["/app/ech0"]
 CMD ["serve"]
