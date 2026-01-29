@@ -20,6 +20,8 @@ import (
 	userModel "github.com/lin-snow/ech0/internal/model/user"
 	webhookModel "github.com/lin-snow/ech0/internal/model/webhook"
 	util "github.com/lin-snow/ech0/internal/util/err"
+	logUtil "github.com/lin-snow/ech0/internal/util/log"
+	"go.uber.org/zap"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -89,6 +91,12 @@ func InitDatabase() {
 			Logger: logger.Default.LogMode(ll),
 		})
 		if err != nil {
+			// 打印详细错误信息
+			logUtil.GetLogger().Error("数据库初始化失败",
+				zap.String("dbPath", dbPath),
+				zap.String("dbType", dbType),
+				zap.Error(err),
+			)
 			util.HandlePanicError(&commonModel.ServerError{
 				Msg: commonModel.INIT_DATABASE_PANIC,
 				Err: err,
